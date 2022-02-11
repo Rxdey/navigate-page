@@ -1,3 +1,3 @@
 export interface PropType {
-  [key: string]: any
+  [key: number | string]: any
 }

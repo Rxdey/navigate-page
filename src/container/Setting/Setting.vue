@@ -10,7 +10,7 @@
     closeable
     teleport="body"
   >
-    <van-tabs v-model:active="active" sticky swipeable animated color="#fc7c79">
+    <van-tabs v-model:active="active" sticky animated color="#fc7c79">
       <van-tab title="添加">
         <AddPaneVue />
       </van-tab>

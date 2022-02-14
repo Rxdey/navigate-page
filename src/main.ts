@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { Cell, CellGroup, Icon } from 'vant';
+import { Cell, CellGroup, Icon, Button } from 'vant';
 import 'lib-flexible';
 import RxIcon from '@/components/RxIcon/RxIcon.vue';
 // import router from './router';
@@ -15,4 +15,5 @@ app.component('RxIcon', RxIcon);
 app.component(CellGroup.name, CellGroup);
 app.component(Cell.name, Cell);
 app.component(Icon.name, Icon);
+app.component(Button.name, Button);
 app.mount('#app');

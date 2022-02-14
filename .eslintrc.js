@@ -20,6 +20,7 @@ module.exports = {
     'no-param-reassign': 0,
     'object-curly-newline': 0,
     "indent": "off",
-    '@typescript-eslint/no-empty-function': 1
+    '@typescript-eslint/no-empty-function': 1,
+    'max-len': 0
   },
 };

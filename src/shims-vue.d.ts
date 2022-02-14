@@ -8,3 +8,7 @@ declare module '*.vue' {
 declare interface Window {
   jsonCallBack: any
 }
+declare module '@ckpack/vue-color' {
+  import { Chrome } from '@ckpack/vue-color';
+  export const Chrome: WithInstall<DefineComponent<{}>>;
+}

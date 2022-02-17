@@ -1,40 +1,72 @@
 <template>
   <section class="AddPane">
     <van-cell-group title="自定义导航">
-      <van-field label="网站地址" v-model="form.sitUrl" placeholder="请输入网站地址" @blur="onBlur"></van-field>
+      <van-field label="网站地址" v-model="form.sitUrl" placeholder="请输入网站地址"></van-field>
       <van-field label="网站名称" v-model="form.sitName" placeholder="请输入网站名称"></van-field>
     </van-cell-group>
     <van-cell-group title="选择图标">
       <div class="logo-wrap">
         <div class="logo-prefix">
-          <div class="image-inner border-radius16">
-            <div class="logo-inner" :style="{ backgroundColor: form.logoColor }"></div>
+          <div class="image-inner border-radius16" @click="clearIcon">
+            <div class="logo-inner" :style="{ backgroundColor: form.logoBgColor }">
+              <div
+                class="logo-img"
+                :style="{ backgroundImage: form.logoBg ? `url(${form.logoBg})` : '' }"
+              >
+                <span
+                  :style="{ fontSize: `${form.logoLabelSize / 100}rem`, color: form.logoColor }"
+                  v-if="!isSelectIcon"
+                >{{ form.logoLabel }}</span>
+              </div>
+            </div>
           </div>
         </div>
         <div class="logo-list">
-          <div class="logo-inner image-inner">
-            <div class="logo-img" :style="{'background-image': tempIco ? `url(${tempIco})` : ''}"></div>
+          <div
+            class="logo-inner image-inner"
+            :class="{ selected: isSelectIcon }"
+            @click="handleSelectIcon"
+          >
+            <div class="logo-img" :style="{ backgroundImage: tempIco ? `url(${tempIco})` : '' }"></div>
+          </div>
+          <div class="logo-label van-hairline--bottom" v-show="!isSelectIcon">
+            <input v-model="form.logoLabel" type="text" placeholder="图标文字(可选)" />
           </div>
         </div>
         <div class="logo-after">
-          <div class="logo-inner upload">
+          <div class="logo-inner upload" @click="handleChooseImage">
             <van-icon name="plus" size=".65rem" color="#C3C3C3" />
           </div>
         </div>
       </div>
-      <!-- <div class="logo-tool">
+      <div class="logo-tool" v-show="!isSelectIcon">
         <div class="slider">
-          <p class="slider-label">字体大小</p>
+          <div class="slider-label">
+            字体大小
+            <span
+              class="font-color-picker"
+              @click.stop="showFontColorPicker = !showFontColorPicker"
+            ></span>
+          </div>
           <div class="slider-wrap">
             <div class="slider-content">
-              <van-slider v-model="form.sitNameSize" :step="1" :max="60" :min="22" />
+              <van-slider
+                v-model="form.logoLabelSize"
+                :step="1"
+                :max="100"
+                :min="30"
+                button-size="0.4rem"
+              />
             </div>
-            <div>{{ form.sitNameSize }}</div>
+            <div>{{ form.logoLabelSize }}</div>
+          </div>
+          <div class="color-picker" v-show="showFontColorPicker" @click.stop>
+            <Chrome v-model="tempFontColor" />
           </div>
         </div>
-      </div>-->
+      </div>
       <div class="logo-color">
-        <p class="label">颜色</p>
+        <p class="label">背景颜色</p>
         <div class="color-list">
           <div class="color-item" v-for="(color, i) in colorList" :key="i">
             <div class="color-box image-inner">
@@ -64,25 +96,31 @@
       </div>
     </van-cell-group>
     <div class="button-wrap">
-      <van-button block round type="danger">添加</van-button>
+      <van-button block round type="danger" @click="handleSubmit">添加</van-button>
     </div>
+    <Upload ref="uploadRef" @upload="onUpload"></Upload>
   </section>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed, watch, Ref } from 'vue';
-import { Field as VanField, Slider as VanSlider } from 'vant';
+import { Field as VanField, Slider as VanSlider, Toast } from 'vant';
 import { Chrome } from '@ckpack/vue-color';
+import Upload, { UploadExpose } from '@/components/Upload/Upload.vue';
+import { rxLocalStorage } from '@/common/util';
 
-interface TempColor {
+type TempColor = {
   rgba?: { r: number, g: number, b: number, a: number }
 }
 
 const form = ref({
   sitUrl: '',
   sitName: '',
-  sitNameSize: 28,
-  logoColor: '',
+  logoColor: 'rgba(255,255,255,1)',
+  logoBg: '',
+  logoBgColor: '',
+  logoLabel: '',
+  logoLabelSize: 37,
 });
 const colorList = ref([
   'rgba(0,0,0,0)',
@@ -92,20 +130,109 @@ const colorList = ref([
   'rgba(238,216,78,1)',
   'rgba(86,214,234,1)',
 ]); // 快速选择色盘
+
 const colorActive = ref(0);
 const showColorPicker = ref(false);
+const showFontColorPicker = ref(false);
 const tempActive = ref(false);
 const tempColor: Ref<string | TempColor> = ref({});
-
+const tempFontColor: Ref<string | TempColor> = ref('rgba(255,255,255,1)');
 const tempIco = ref('');
+const isSelectIcon = ref(false);
+const uploadRef = ref<InstanceType<typeof Upload> & UploadExpose>();
 
 onMounted(() => {
   document.body.addEventListener('click', () => {
     showColorPicker.value = false;
+    showFontColorPicker.value = false;
   });
 });
 
+// 选择图标
+const handleSelectIcon = () => {
+  if (!tempIco.value) return;
+  isSelectIcon.value = true;
+  form.value.logoBg = tempIco.value;
+};
+// 清除图标
+const clearIcon = () => {
+  form.value.logoBg = '';
+  isSelectIcon.value = false;
+};
+// 选择颜色
+const setColorActive = (active: number) => {
+  colorActive.value = active;
+  const color = colorList.value[colorActive.value];
+  if (!color) return;
+  form.value.logoBgColor = color;
+  tempColor.value = color;
+  if (tempActive.value) tempActive.value = false;
+};
+// 上传图片
+const handleChooseImage = () => {
+  if (!uploadRef.value) return;
+  uploadRef.value.chooseImage();
+};
+const onUpload = (base64: string) => {
+  if (!base64) return;
+  tempIco.value = base64;
+  handleSelectIcon();
+};
+
+const handleSubmit = () => {
+  const { sitUrl, sitName, logoBg, logoBgColor, logoLabel } = form.value;
+  if (!sitUrl) {
+    Toast('请输入网站地址');
+    return;
+  }
+  if (!sitName) {
+    Toast('请输入网站名称');
+    return;
+  }
+  if (!logoBg && !logoBgColor && !logoLabel) {
+    Toast('请完善图标设置');
+    return;
+  }
+  if (!/[http|https]:\/\//.test(form.value.sitUrl)) {
+    form.value.sitUrl = `http://${form.value.sitUrl}`;
+  }
+  const str = rxLocalStorage.getItem('shortcutList');
+  const shortcutList = str ? JSON.parse(str) : [];
+  shortcutList.push(form.value);
+  rxLocalStorage.setItem('shortcutList', JSON.stringify(shortcutList));
+  tempIco.value = '';
+  clearIcon();
+  colorActive.value = 0;
+  tempActive.value = false;
+  form.value = {
+    sitUrl: '',
+    sitName: '',
+    logoColor: 'rgba(255,255,255,1)',
+    logoBg: '',
+    logoBgColor: '',
+    logoLabel: '',
+    logoLabelSize: 37,
+  };
+};
+
+// 取色器格式不对，处理一下
 watch(tempColor, (val) => {
+  let color;
+  if (typeof val === 'object') {
+    const { rgba } = val;
+    if (!rgba) return;
+    const { r, g, b, a } = rgba;
+    color = `rgba(${r}, ${g}, ${b}, ${a})`;
+  } else {
+    color = val;
+  }
+  form.value.logoBgColor = color;
+  if (showColorPicker.value) {
+    colorActive.value = -1;
+    tempActive.value = true;
+  }
+});
+watch(tempFontColor, (val) => {
   let color;
   if (typeof val === 'object') {
     const { rgba } = val;
@@ -117,29 +244,9 @@ watch(tempColor, (val) => {
   }
   form.value.logoColor = color;
   if (showColorPicker.value) {
-    colorActive.value = -1;
     tempActive.value = true;
   }
 });
-
-// 选择颜色
-const setColorActive = (active: number) => {
-  colorActive.value = active;
-  const color = colorList.value[colorActive.value];
-  if (!color) return;
-  form.value.logoColor = color;
-  tempColor.value = color;
-  if (tempActive.value) tempActive.value = false;
-};
-
-const onBlur = () => {
-  if (!form.value.sitUrl) return;
-  let url = form.value.sitUrl;
-  if (!/[http|https]:\/\//.test(form.value.sitUrl)) {
-    url = `http://${form.value.sitUrl}`;
-  }
-  tempIco.value = `${url}/favicon.ico`;
-};
 
 </script>
 
@@ -160,7 +267,8 @@ const onBlur = () => {
   width: 100%;
   display: flex;
   flex-flow: row nowrap;
-  padding: 16px var(--box-padding);
+  padding: 0 var(--box-padding);
+  margin-bottom: 16px;
   .logo-inner {
     width: var(--logo-size);
     height: var(--logo-size);
@@ -171,10 +279,16 @@ const onBlur = () => {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    // border: 1px solid #c3c3c3;
+    color: #fff;
+    font-weight: bold;
+    line-height: var(--logo-size);
+    font-size: var(--font-s);
+    &.selected {
+      box-shadow: 0 0 10px #009688;
+    }
     .logo-img {
       background-position: center;
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
       width: 100%;
       height: 100%;
@@ -213,15 +327,41 @@ const onBlur = () => {
     flex: 1;
     min-width: 1px;
     padding: 0 16px;
+    display: flex;
+    flex-flow: row nowrap;
+    .logo-label {
+      flex: 1;
+      align-items: center;
+      margin-left: 16px;
+      input {
+        width: 100%;
+        height: 100%;
+        padding: 16px 32px;
+        font-size: var(--font-s);
+        border: none;
+        outline: none;
+      }
+    }
   }
 }
 .slider {
-  margin-bottom: 32px;
+  margin-bottom: 16px;
   padding: 0 var(--box-padding);
   font-size: var(--font-s);
   .slider-label {
-    margin-bottom: 32px;
-    color: var(--van-field-label-color);
+    margin-bottom: 16px;
+    color: #969799;
+    position: relative;
+    .font-color-picker {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      background: url(image/color.png) no-repeat center;
+      background-size: contain;
+    }
   }
   .slider-wrap {
     display: flex;
@@ -233,10 +373,16 @@ const onBlur = () => {
     width: 1px;
     padding: 0 50px 0 16px;
   }
+  .color-picker {
+    bottom: 0;
+    position: absolute;
+    z-index: 10;
+    right: 72px;
+  }
 }
 .logo-color {
   padding: 16px var(--box-padding);
-  color: var(--van-field-label-color);
+  color: #969799;
   font-size: var(--font-s);
   position: relative;
   .label {

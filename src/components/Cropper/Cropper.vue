@@ -1,6 +1,6 @@
 <template>
   <div class="cropper">
-    <nav-bar title="编辑头像" left-text="返回" right-text="完成" left-arrow @click-right="handleSubmit" @click-left="emit('close')"></nav-bar>
+    <nav-bar title="裁剪图片" left-text="返回" right-text="完成" left-arrow @click-right="handleSubmit" @click-left="emit('close')"></nav-bar>
     <div class="cropper-body">
       <img ref="image" :src="props.image" />
     </div>
@@ -9,12 +9,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, defineProps, defineEmits, Ref } from 'vue';
-import { NavBar } from 'vant';
+import { NavBar, Toast } from 'vant';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.min.css';
 
 let cropper: Cropper | null = null;
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'submit']);
 const props = defineProps({
   image: {
     type: String,
@@ -26,16 +26,21 @@ const image: Ref<HTMLImageElement | null> = ref(null);
 onMounted(() => {
   if (!image.value) return;
   cropper = new Cropper(image.value, {
-    viewMode: 2,
+    viewMode: 1,
     aspectRatio: 9 / 16,
-    dragMode: 'crop',
+    dragMode: 'move',
     // guides: false,
     background: false,
     movable: true,
   });
 });
 const handleSubmit = () => {
-  console.log(cropper);
+  // console.log(cropper);
+  if (!cropper) {
+    Toast.fail('裁剪图片失败');
+    return;
+  }
+  emit('submit', cropper.getCroppedCanvas().toDataURL('image/jpeg'));
 };
 
 </script>

@@ -352,16 +352,6 @@ watch(tempFontColor, (val) => {
     margin-bottom: 16px;
     color: #969799;
     position: relative;
-    .font-color-picker {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 30px;
-      height: 30px;
-      background: url(image/color.png) no-repeat center;
-      background-size: contain;
-    }
   }
   .slider-wrap {
     display: flex;

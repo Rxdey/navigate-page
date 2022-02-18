@@ -1,13 +1,32 @@
 <template>
   <div class="layout">
     <van-cell-group title="背景图片">
+      <van-cell center title="网络图片">
+        <template #right-icon>
+          <van-switch v-model="checked" size="24" />
+        </template>
+      </van-cell>
+      <van-field
+        label="图片地址"
+        v-model="layoutSetting.networkUrl"
+        placeholder="请输入图片地址"
+        v-if="checked"
+      ></van-field>
+      <van-cell center title="开启裁剪模式" label="仅上传本地图片生效" v-show="!checked">
+        <template #right-icon>
+          <van-switch v-model="isCut" size="24" />
+        </template>
+      </van-cell>
       <div class="bg-wrap box-padding">
         <div class="bg-item">
           <div class="current-image image-inner">
-            <div class="current-image__inner"></div>
+            <div
+              class="current-image__inner"
+              :style="`background-color: ${layoutSetting.color};background-image:url(${currentBg});${layoutSetting.displayMode}`"
+            ></div>
           </div>
         </div>
-        <div class="bg-item">
+        <div class="bg-item" v-show="!checked">
           <div class="current-image upload" @click="handleUplpad">
             <van-icon name="plus" size=".65rem" color="#C3C3C3" />
           </div>
@@ -15,55 +34,88 @@
       </div>
     </van-cell-group>
     <van-cell-group title="展示方式">
+      <template #title>
+        <div class="van-cell-group__title">
+          展示方式
+          <span
+            class="font-color-picker"
+            @click.stop="showFontColorPicker = !showFontColorPicker"
+          ></span>
+          <div class="color-picker" v-show="showFontColorPicker" @click.stop>
+            <Chrome v-model="tempColor" />
+          </div>
+        </div>
+      </template>
       <div class="box-padding">
-        <RadioTagVue :options="displayModeList" v-model="bgOpt.displayMode"/>
+        <RadioTagVue :options="displayModeList" v-model="layoutSetting.displayMode" />
       </div>
     </van-cell-group>
-    <Upload ref="uploadRef" @upload="onUpload" blob :limit="1540"></Upload>
+    <Upload ref="uploadRef" @upload="onUpload" :blob="isCut" :limit="1540"></Upload>
   </div>
   <!-- 裁剪 -->
-  <!-- <van-popup
-    v-model:show="showPopup"
-    position="bottom"
-    :style="{ height: '100%'}"
-    teleport="body"
-  >
-    <CropperVue v-if="showPopup" :image="tempImage" @close="showPopup = false"/>
-  </van-popup>-->
+  <van-popup v-model:show="showPopup" position="bottom" :style="{ height: '100%' }" teleport="body">
+    <CropperVue
+      v-if="showPopup"
+      :image="tempImage"
+      @close="showPopup = false"
+      @submit="onImageSubmit"
+    />
+  </van-popup>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed, Ref } from 'vue';
-import { Popup as VanPopup } from 'vant';
+import { Popup as VanPopup, Switch as VanSwitch, Field as VanField } from 'vant';
 import Upload, { UploadExpose } from '@/components/Upload/Upload.vue';
-// import CropperVue from '@/components/Cropper/Cropper.vue';
+import CropperVue from '@/components/Cropper/Cropper.vue';
 import RadioTagVue from '@/components/RadioTag/RadioTag.vue';
 import { LayoutSettingData } from '@/common/types';
+import { dataURLtoBlob } from '@/common/util';
+import { Chrome } from '@ckpack/vue-color';
 
+type TempColor = {
+  rgba?: { r: number, g: number, b: number, a: number }
+}
 const displayModeList = [
   { label: '填充', value: 'background-size:cover' },
   { label: '适应', value: 'background-size:contain' },
   { label: '平铺', value: 'background-size:contain;background-repeat:repeat' },
 ];
 
-const bgOpt: Ref<LayoutSettingData> = ref({
+const layoutSetting: Ref<LayoutSettingData> = ref({
   displayMode: 'background-size:cover',
+  networkUrl: '',
+  bg: '',
+  color: '',
 });
 const uploadRef = ref<InstanceType<typeof Upload> & UploadExpose>();
 const showPopup = ref(false);
 const tempImage = ref('');
+const checked = ref(false);
+const isCut = ref(true);
+const tempColor: Ref<string | TempColor> = ref({});
+const showFontColorPicker = ref(false);
 
+const currentBg = computed(() => (checked.value ? layoutSetting.value.networkUrl : window.URL.createObjectURL(dataURLtoBlob(layoutSetting.value.bg) || new Blob())));
+// 上传图片
 const handleUplpad = () => {
   if (!uploadRef.value) return;
   uploadRef.value.chooseImage();
 };
 const onUpload = (blob: string) => {
   if (!blob) return;
-  console.log(blob);
+  if (!isCut.value) {
+    layoutSetting.value.bg = blob;
+    return;
+  }
   tempImage.value = blob;
   showPopup.value = true;
 };
-
+const onImageSubmit = (data: string) => {
+  layoutSetting.value.bg = data;
+  showPopup.value = false;
+  console.log(currentBg.value);
+};
 </script>
 
 <style lang="less">
@@ -78,6 +130,7 @@ const onUpload = (blob: string) => {
   width: 105px;
   height: 180px;
   border-radius: var(--border-radius);
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,6 +146,12 @@ const onUpload = (blob: string) => {
         white 0,
         white 0.52em
       );
+  }
+  &__inner {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 }
 </style>

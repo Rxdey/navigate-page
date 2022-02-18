@@ -26,7 +26,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { Popup as VanPopup, Tab as VanTab, Tabs as VanTabs } from 'vant';
 import AddPaneVue from './components/AddPane.vue';
-import LayoutVue from './components/Layout.vue';
+import LayoutVue from './components/LayoutVue.vue';
 
 const show = ref(false);
 const active = ref(1);

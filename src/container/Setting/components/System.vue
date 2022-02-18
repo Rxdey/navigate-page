@@ -1,13 +1,13 @@
 <template>
-  <div class="layout">
-    <van-cell-group title="背景图片">
+  <div class="System">
 
-    </van-cell-group>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useStore } from '@/store';
 
 </script>
 

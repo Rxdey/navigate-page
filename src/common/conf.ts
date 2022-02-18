@@ -1,0 +1,2 @@
+export const LAYOUT_SETTING = 'SHORTCUT_LIST';
+export const SHORTCUT_LIST = 'SHORTCUT_LIST';

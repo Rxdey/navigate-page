@@ -21,6 +21,7 @@
     "babel-plugin-import": "^1.13.3",
     "consola": "^2.15.3",
     "core-js": "^3.6.5",
+    "cropperjs": "^1.5.12",
     "lib-flexible": "^0.3.2",
     "lodash-es": "^4.17.21",
     "postcss-px-to-viewport-rxdey": "^0.0.9",

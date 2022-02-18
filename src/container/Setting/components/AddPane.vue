@@ -107,13 +107,14 @@ import { ref, onMounted, computed, watch, Ref } from 'vue';
 import { Field as VanField, Slider as VanSlider, Toast } from 'vant';
 import { Chrome } from '@ckpack/vue-color';
 import Upload, { UploadExpose } from '@/components/Upload/Upload.vue';
-import { rxLocalStorage } from '@/common/util';
+import { ShortcutData } from '@/common/types';
+import { useStore } from '@/store';
 
 type TempColor = {
   rgba?: { r: number, g: number, b: number, a: number }
 }
-
-const form = ref({
+const store = useStore();
+const form: Ref<ShortcutData> = ref({
   sitUrl: '',
   sitName: '',
   logoColor: 'rgba(255,255,255,1)',
@@ -193,13 +194,12 @@ const handleSubmit = () => {
     Toast('请完善图标设置');
     return;
   }
-  if (!/[http|https]:\/\//.test(form.value.sitUrl)) {
+  if (!/[http|https]:\/\//.test(form.value.sitUrl || '')) {
     form.value.sitUrl = `http://${form.value.sitUrl}`;
   }
-  const str = rxLocalStorage.getItem('shortcutList');
-  const shortcutList = str ? JSON.parse(str) : [];
+  const { shortcutList } = store.state;
   shortcutList.push(form.value);
-  rxLocalStorage.setItem('shortcutList', JSON.stringify(shortcutList));
+  store.commit('UPDATE_SHORTCUT_LIST', shortcutList);
   tempIco.value = '';
   clearIcon();
   colorActive.value = 0;

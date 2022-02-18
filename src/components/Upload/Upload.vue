@@ -6,14 +6,31 @@
 
 <script setup lang="ts">
 import { Toast } from 'vant';
-import { ref, onMounted, computed, Ref, defineExpose, defineEmits } from 'vue';
+import { ref, onMounted, computed, Ref, defineExpose, defineEmits, defineProps } from 'vue';
 
 export interface UploadExpose {
   chooseImage: () => void;
 }
+const props = defineProps({
+  blob: {
+    type: Boolean,
+    default: false,
+  },
+  limit: {
+    type: Number,
+    default: 100,
+  },
+});
 const emit = defineEmits(['upload']);
 const fileRef: Ref<HTMLInputElement | null> = ref(null);
+const kbToSize = computed(() => {
+  if (props.limit === 0) return '0 kB';
+  const k = 1024; // or 1024
+  const sizes = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(props.limit) / Math.log(k));
 
+  return `${(props.limit / (k ** i)).toPrecision(3)} ${sizes[i]}`;
+});
 const chooseImage = () => {
   if (!fileRef.value) return;
   fileRef.value.value = '';
@@ -26,8 +43,12 @@ const onChange = (e: Event) => {
   const { files } = e.target as HTMLInputElement;
   if (!files) return;
   const { size } = files[0];
-  if (size > 102400) {
-    Toast('因本地存储问题，请上传小于100kb的图标');
+  if (size > (1024 * props.limit)) {
+    Toast(`因本地存储问题，请上传小于${kbToSize.value}的图标`);
+    return;
+  }
+  if (props.blob) {
+    emit('upload', window.URL.createObjectURL(files[0]));
     return;
   }
   const reader = new FileReader();

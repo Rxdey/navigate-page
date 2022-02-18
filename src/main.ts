@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import { Cell, CellGroup, Icon, Button } from 'vant';
 import 'lib-flexible';
 import RxIcon from '@/components/RxIcon/RxIcon.vue';
+import store, { key } from './store';
 // import router from './router';
 import App from './App.vue';
 import './assets/css/reset.less';
@@ -16,4 +17,6 @@ app.component(CellGroup.name, CellGroup);
 app.component(Cell.name, Cell);
 app.component(Icon.name, Icon);
 app.component(Button.name, Button);
+
+app.use(store, key);
 app.mount('#app');

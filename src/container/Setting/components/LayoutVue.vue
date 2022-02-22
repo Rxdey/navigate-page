@@ -76,7 +76,7 @@ import Upload, { UploadExpose } from '@/components/Upload/Upload.vue';
 import CropperVue from '@/components/Cropper/Cropper.vue';
 import RadioTagVue from '@/components/RadioTag/RadioTag.vue';
 import { LayoutSettingData } from '@/common/types';
-import { dataURLtoBlob, rxLocalStorage } from '@/common/util';
+import { dataURLtoBlob } from '@/common/util';
 import { Chrome } from '@ckpack/vue-color';
 import { useStore } from '@/store';
 
@@ -110,17 +110,10 @@ onMounted(() => {
   document.body.addEventListener('click', () => {
     showFontColorPicker.value = false;
   });
-  const storage = rxLocalStorage.getItem('LAYOUT_SETTING');
-  if (!storage) return;
-  try {
-    layoutSetting.value = JSON.parse(storage);
-    tempColor.value = layoutSetting.value.color || '';
-    if (layoutSetting.value.networkUrl) {
-      checked.value = true;
-    }
-  } catch (error) {
-    console.error(error);
-    rxLocalStorage.removeItem('LAYOUT_SETTING');
+  layoutSetting.value = store.state.layoutSetting;
+  tempColor.value = layoutSetting.value.color || '';
+  if (layoutSetting.value.networkUrl) {
+    checked.value = true;
   }
 });
 

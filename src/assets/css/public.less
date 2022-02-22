@@ -115,14 +115,23 @@ div {
 .box-padding {
   padding: calc(var(--box-padding) / 2) var(--box-padding);
 }
+.button-wrap {
+  padding: var(--box-padding);
+}
 
 .font-color-picker {
-  position: absolute;
-  right: 0;
   top: 50%;
   transform: translateY(-50%);
   width: 30px;
   height: 30px;
   background: url(image/color.png) no-repeat center;
   background-size: contain;
+}
+
+.group-title {
+  position: relative;
+  .title-right {
+    position: absolute;
+    right: 0;
+  }
 }

@@ -33,7 +33,7 @@ const onChecked = (opt: { label: string, value: string }) => {
     border: 1px solid var(--color-gray);
     color: var(--color-gray);
     font-size: var(--font-s);
-    margin-right: 8px;
+    margin-right: 16px;
     &.checked {
       color: var(--color-red);
       border-color: var(--color-red);

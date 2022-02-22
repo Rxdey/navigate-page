@@ -11,6 +11,7 @@ const initState = () => {
     shortcutList: [],
     layoutSetting: {},
   };
+
   const shortcutList = rxLocalStorage.getItem(SHORTCUT_LIST);
   sate.shortcutList = shortcutList ? JSON.parse(shortcutList) : [];
   const layoutSetting = rxLocalStorage.getItem(LAYOUT_SETTING);

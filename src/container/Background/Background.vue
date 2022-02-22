@@ -1,16 +1,20 @@
 <template>
-  <div class="Background" :style="{backgroundImage: `url(${url})`}"></div>
+  <div
+    class="Background"
+    :style="`background-color: ${layoutSetting.color};background-image:url(${currentBg});${layoutSetting.displayMode}`"
+  ></div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed, defineProps } from 'vue';
+import { useStore } from '@/store';
+import { dataURLtoBlob } from '@/common/util';
 
-const props = defineProps({
-  url: {
-    type: String,
-    default: 'https://w.wallhaven.cc/full/gj/wallhaven-gjyoq7.png',
-  },
-});
+const store = useStore();
+
+const layoutSetting = computed(() => store.state.layoutSetting);
+
+const currentBg = computed(() => (layoutSetting.value.networkUrl ? layoutSetting.value.networkUrl : window.URL.createObjectURL(dataURLtoBlob(layoutSetting.value.bg) || new Blob())));
 
 </script>
 

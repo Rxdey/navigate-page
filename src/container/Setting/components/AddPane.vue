@@ -39,34 +39,38 @@
           </div>
         </div>
       </div>
-      <div class="logo-tool" v-show="!isSelectIcon">
-        <div class="slider">
-          <div class="slider-label">
-            字体大小
-            <span
-              class="font-color-picker"
-              @click.stop="showFontColorPicker = !showFontColorPicker"
-            ></span>
+    </van-cell-group>
+    <van-cell-group v-if="!isSelectIcon">
+      <template #title>
+        <div class="group-title">
+          字体大小
+          <span
+            class="title-right font-color-picker"
+            @click.stop="showFontColorPicker = !showFontColorPicker"
+          ></span>
+        </div>
+      </template>
+
+      <div class="slider">
+        <div class="slider-wrap">
+          <div class="slider-content">
+            <van-slider
+              v-model="form.logoLabelSize"
+              :step="1"
+              :max="100"
+              :min="30"
+              button-size="0.4rem"
+            />
           </div>
-          <div class="slider-wrap">
-            <div class="slider-content">
-              <van-slider
-                v-model="form.logoLabelSize"
-                :step="1"
-                :max="100"
-                :min="30"
-                button-size="0.4rem"
-              />
-            </div>
-            <div>{{ form.logoLabelSize }}</div>
-          </div>
-          <div class="color-picker" v-show="showFontColorPicker" @click.stop>
-            <Chrome v-model="tempFontColor" />
-          </div>
+          <div>{{ form.logoLabelSize }}</div>
+        </div>
+        <div class="color-picker" v-show="showFontColorPicker" @click.stop>
+          <Chrome v-model="tempFontColor" />
         </div>
       </div>
+    </van-cell-group>
+    <van-cell-group title="背景颜色">
       <div class="logo-color">
-        <p class="label">背景颜色</p>
         <div class="color-list">
           <div class="color-item" v-for="(color, i) in colorList" :key="i">
             <div class="color-box image-inner">
@@ -95,9 +99,11 @@
         </div>
       </div>
     </van-cell-group>
+
     <div class="button-wrap">
       <van-button block round type="danger" @click="handleSubmit">添加</van-button>
     </div>
+
     <Upload ref="uploadRef" @upload="onUpload"></Upload>
   </section>
 </template>
@@ -344,15 +350,11 @@ watch(tempFontColor, (val) => {
     }
   }
 }
+
 .slider {
   margin-bottom: 16px;
   padding: 0 var(--box-padding);
   font-size: var(--font-s);
-  .slider-label {
-    margin-bottom: 16px;
-    color: #969799;
-    position: relative;
-  }
   .slider-wrap {
     display: flex;
     flex-flow: row nowrap;
@@ -370,14 +372,12 @@ watch(tempFontColor, (val) => {
     right: 72px;
   }
 }
+
 .logo-color {
   padding: 16px var(--box-padding);
   color: #969799;
   font-size: var(--font-s);
   position: relative;
-  .label {
-    margin-bottom: 16px;
-  }
   .color-list {
     display: flex;
     flex-flow: row nowrap;
@@ -424,9 +424,5 @@ watch(tempFontColor, (val) => {
     right: var(--box-padding);
     z-index: 1;
   }
-}
-
-.button-wrap {
-  padding: var(--box-padding);
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <van-cell-group title="背景图片">
-      <van-cell center title="网络图片">
+      <van-cell center title="网络图片" label="本地图片限制在1.5M内">
         <template #right-icon>
           <van-switch v-model="checked" size="24" />
         </template>
@@ -33,23 +33,29 @@
         </div>
       </div>
     </van-cell-group>
+
     <van-cell-group title="展示方式">
       <template #title>
-        <div class="van-cell-group__title">
+        <div class="group-title">
           展示方式
           <span
-            class="font-color-picker"
+            class="title-right font-color-picker"
             @click.stop="showFontColorPicker = !showFontColorPicker"
           ></span>
-          <div class="color-picker" v-show="showFontColorPicker" @click.stop>
-            <Chrome v-model="tempColor" />
-          </div>
         </div>
       </template>
       <div class="box-padding">
         <RadioTagVue :options="displayModeList" v-model="layoutSetting.displayMode" />
       </div>
+      <div class="picker-wrap" v-show="showFontColorPicker" @click.stop>
+        <Chrome v-model="tempColor" />
+      </div>
     </van-cell-group>
+
+    <div class="button-wrap">
+      <van-button block round type="danger" @click="handleSubmit">保存</van-button>
+    </div>
+
     <Upload ref="uploadRef" @upload="onUpload" :blob="isCut" :limit="1540"></Upload>
   </div>
   <!-- 裁剪 -->
@@ -64,24 +70,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, Ref } from 'vue';
-import { Popup as VanPopup, Switch as VanSwitch, Field as VanField } from 'vant';
+import { ref, onMounted, computed, Ref, watch } from 'vue';
+import { Popup as VanPopup, Switch as VanSwitch, Field as VanField, Toast } from 'vant';
 import Upload, { UploadExpose } from '@/components/Upload/Upload.vue';
 import CropperVue from '@/components/Cropper/Cropper.vue';
 import RadioTagVue from '@/components/RadioTag/RadioTag.vue';
 import { LayoutSettingData } from '@/common/types';
-import { dataURLtoBlob } from '@/common/util';
+import { dataURLtoBlob, rxLocalStorage } from '@/common/util';
 import { Chrome } from '@ckpack/vue-color';
+import { useStore } from '@/store';
 
 type TempColor = {
   rgba?: { r: number, g: number, b: number, a: number }
 }
+
 const displayModeList = [
   { label: '填充', value: 'background-size:cover' },
   { label: '适应', value: 'background-size:contain' },
   { label: '平铺', value: 'background-size:contain;background-repeat:repeat' },
 ];
-
+const store = useStore();
 const layoutSetting: Ref<LayoutSettingData> = ref({
   displayMode: 'background-size:cover',
   networkUrl: '',
@@ -97,6 +105,36 @@ const tempColor: Ref<string | TempColor> = ref({});
 const showFontColorPicker = ref(false);
 
 const currentBg = computed(() => (checked.value ? layoutSetting.value.networkUrl : window.URL.createObjectURL(dataURLtoBlob(layoutSetting.value.bg) || new Blob())));
+
+onMounted(() => {
+  document.body.addEventListener('click', () => {
+    showFontColorPicker.value = false;
+  });
+  const storage = rxLocalStorage.getItem('LAYOUT_SETTING');
+  if (!storage) return;
+  try {
+    layoutSetting.value = JSON.parse(storage);
+    tempColor.value = layoutSetting.value.color || '';
+    if (layoutSetting.value.networkUrl) {
+      checked.value = true;
+    }
+  } catch (error) {
+    console.error(error);
+    rxLocalStorage.removeItem('LAYOUT_SETTING');
+  }
+});
+
+// 提交
+const handleSubmit = () => {
+  const saveData: LayoutSettingData = JSON.parse(JSON.stringify(layoutSetting.value));
+  if (checked.value) {
+    saveData.bg = '';
+  } else {
+    saveData.networkUrl = '';
+  }
+  store.commit('UPDATE_LAYOUT_SETTING', saveData);
+  Toast.success('保存成功');
+};
 // 上传图片
 const handleUplpad = () => {
   if (!uploadRef.value) return;
@@ -116,6 +154,19 @@ const onImageSubmit = (data: string) => {
   showPopup.value = false;
   console.log(currentBg.value);
 };
+// 取色器格式不对，处理一下
+watch(tempColor, (val) => {
+  let color;
+  if (typeof val === 'object') {
+    const { rgba } = val;
+    if (!rgba) return;
+    const { r, g, b, a } = rgba;
+    color = `rgba(${r}, ${g}, ${b}, ${a})`;
+  } else {
+    color = val;
+  }
+  layoutSetting.value.color = color;
+});
 </script>
 
 <style lang="less">
@@ -153,5 +204,11 @@ const onImageSubmit = (data: string) => {
     background-repeat: no-repeat;
     background-position: center;
   }
+}
+.picker-wrap {
+  position: absolute;
+  bottom: 80%;
+  right: 80px;
+  z-index: 1;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
     <van-cell-group title="背景图片">
-      <van-cell center title="网络图片" label="本地图片限制在1.5M内">
+      <van-cell center title="网络图片">
         <template #right-icon>
           <van-switch v-model="checked" size="24" />
         </template>

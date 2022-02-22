@@ -1,8 +1,8 @@
 import { PropType } from './types';
+import { DATABASE_NAME as PREFIX } from './conf';
 /**
  * localStorage 同域名增加pathname前缀
  */
-const PREFIX = 'NAVIGATE';
 export const rxLocalStorage = {
   removeItemList(array = []) {
     const tag = `__${PREFIX}__`;

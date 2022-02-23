@@ -203,22 +203,24 @@ const handleSubmit = () => {
   if (!/[http|https]:\/\//.test(form.value.sitUrl || '')) {
     form.value.sitUrl = `http://${form.value.sitUrl}`;
   }
-  const { shortcutList } = store.state;
-  shortcutList.push(form.value);
-  store.commit('UPDATE_SHORTCUT_LIST', shortcutList);
-  tempIco.value = '';
-  clearIcon();
-  colorActive.value = 0;
-  tempActive.value = false;
-  form.value = {
-    sitUrl: '',
-    sitName: '',
-    logoColor: 'rgba(255,255,255,1)',
-    logoBg: '',
-    logoBgColor: '',
-    logoLabel: '',
-    logoLabelSize: 37,
-  };
+  try {
+    store.commit('UPDATE_SHORTCUT_LIST', form.value);
+    tempIco.value = '';
+    clearIcon();
+    colorActive.value = 0;
+    tempActive.value = false;
+    form.value = {
+      sitUrl: '',
+      sitName: '',
+      logoColor: 'rgba(255,255,255,1)',
+      logoBg: '',
+      logoBgColor: '',
+      logoLabel: '',
+      logoLabelSize: 37,
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // 取色器格式不对，处理一下

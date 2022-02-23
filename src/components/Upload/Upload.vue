@@ -18,7 +18,7 @@ const props = defineProps({
   },
   limit: {
     type: Number,
-    default: 100,
+    default: 20000,
   },
 });
 const emit = defineEmits(['upload']);

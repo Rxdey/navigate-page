@@ -1,6 +1,16 @@
 export const LAYOUT_SETTING = 'LAYOUT_SETTING';
 export const SHORTCUT_LIST = 'SHORTCUT_LIST';
 /**
+ * 初始化数据配置
+ */
+
+export const DEFAULT_LAYOUT_SETTING = {
+  displayMode: 'background-size:cover',
+  networkUrl: '',
+  bg: '',
+  color: '',
+};
+/**
  * indexedDB配置
  */
 export const DATABASE_NAME = 'NAVIGATE';

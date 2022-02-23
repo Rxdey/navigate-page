@@ -28,8 +28,8 @@ import { Popup as VanPopup, Tab as VanTab, Tabs as VanTabs } from 'vant';
 import AddPaneVue from './components/AddPane.vue';
 import LayoutVue from './components/LayoutVue.vue';
 
-const show = ref(true);
-const active = ref(1);
+const show = ref(false);
+const active = ref(0);
 
 const showPopup = () => {
   show.value = true;

@@ -3,6 +3,7 @@ export interface PropType {
 }
 
 export interface ShortcutData {
+  id?: string| number;
   logoBg?: string;
   logoBgColor?: string;
   logoColor: string;
@@ -13,6 +14,7 @@ export interface ShortcutData {
 }
 
 export interface LayoutSettingData {
+  id?: number | string,
   bg?: string,
   color?: string,
   networkUrl?: string,

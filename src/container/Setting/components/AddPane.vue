@@ -59,6 +59,7 @@
               :step="1"
               :max="100"
               :min="30"
+              active-color="#333"
               button-size="0.4rem"
             />
           </div>
@@ -203,24 +204,22 @@ const handleSubmit = () => {
   if (!/[http|https]:\/\//.test(form.value.sitUrl || '')) {
     form.value.sitUrl = `http://${form.value.sitUrl}`;
   }
-  try {
-    store.commit('UPDATE_SHORTCUT_LIST', form.value);
-    tempIco.value = '';
-    clearIcon();
-    colorActive.value = 0;
-    tempActive.value = false;
-    form.value = {
-      sitUrl: '',
-      sitName: '',
-      logoColor: 'rgba(255,255,255,1)',
-      logoBg: '',
-      logoBgColor: '',
-      logoLabel: '',
-      logoLabelSize: 37,
-    };
-  } catch (error) {
-    console.log(error);
-  }
+  const { shortcutList } = store.state;
+  shortcutList.push(form.value);
+  store.commit('UPDATE_SHORTCUT_LIST', JSON.parse(JSON.stringify(shortcutList)));
+  tempIco.value = '';
+  clearIcon();
+  colorActive.value = 0;
+  tempActive.value = false;
+  form.value = {
+    sitUrl: '',
+    sitName: '',
+    logoColor: 'rgba(255,255,255,1)',
+    logoBg: '',
+    logoBgColor: '',
+    logoLabel: '',
+    logoLabelSize: 37,
+  };
 };
 
 // 取色器格式不对，处理一下
@@ -259,6 +258,7 @@ watch(tempFontColor, (val) => {
 </script>
 
 <style lang="less">
+@import url('../index.less');
 :root {
   --logo-size: 90px;
 }
@@ -350,28 +350,6 @@ watch(tempFontColor, (val) => {
         outline: none;
       }
     }
-  }
-}
-
-.slider {
-  margin-bottom: 16px;
-  padding: 0 var(--box-padding);
-  font-size: var(--font-s);
-  .slider-wrap {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-  }
-  .slider-content {
-    flex: 1;
-    width: 1px;
-    padding: 0 50px 0 16px;
-  }
-  .color-picker {
-    bottom: 0;
-    position: absolute;
-    z-index: 10;
-    right: 72px;
   }
 }
 

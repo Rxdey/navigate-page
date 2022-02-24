@@ -1,8 +1,12 @@
 <template>
-  <div
-    class="Background"
-    :style="`background-color: ${layoutSetting.color};background-image:url(${currentBg});${layoutSetting.displayMode}`"
-  ></div>
+  <teleport to="body">
+    <div
+      class="background"
+      :style="`background-color: ${layoutSetting.color};background-image:url(${currentBg});${layoutSetting.displayMode}; filter: blur(${(layoutSetting.filter || 0) * 0.2}px);${layoutSetting.filter ? 'transform:scale(1.04)' : ''}`"
+    >
+    <div class="background-mask" :style="{backgroundColor: `rgba(0,0,0, ${(layoutSetting.mask || 0) * 0.01})`}"></div>
+    </div>
+  </teleport>
 </template>
 
 <script setup lang="ts">
@@ -19,8 +23,8 @@ const currentBg = computed(() => (layoutSetting.value.networkUrl ? layoutSetting
 </script>
 
 <style lang="less">
-.Background {
-  position: absolute;
+.background {
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -30,5 +34,13 @@ const currentBg = computed(() => (layoutSetting.value.networkUrl ? layoutSetting
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+}
+.background-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,.1);
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div class="layout">
+    <p class="tip">请注意，预览效果不会被保存，请手动保存</p>
     <van-cell-group title="背景图片">
       <van-cell center title="网络图片">
         <template #right-icon>
@@ -34,7 +35,7 @@
       </div>
     </van-cell-group>
 
-    <van-cell-group title="展示方式">
+    <van-cell-group>
       <template #title>
         <div class="group-title">
           展示方式
@@ -51,7 +52,40 @@
         <Chrome v-model="tempColor" />
       </div>
     </van-cell-group>
-
+    <van-cell-group title="遮罩层">
+      <div class="slider">
+        <div class="slider-wrap">
+          <div class="slider-content">
+            <van-slider
+              v-model="layoutSetting.mask"
+              :step="1"
+              :max="100"
+              :min="0"
+              active-color="#333"
+              button-size="0.4rem"
+            />
+          </div>
+          <div>{{ layoutSetting.mask || 0 }}%</div>
+        </div>
+      </div>
+    </van-cell-group>
+    <van-cell-group title="背景模糊">
+      <div class="slider">
+        <div class="slider-wrap">
+          <div class="slider-content">
+            <van-slider
+              v-model="layoutSetting.filter"
+              :step="1"
+              :max="100"
+              :min="0"
+              active-color="#333"
+              button-size="0.4rem"
+            />
+          </div>
+          <div>{{ layoutSetting.filter || 0 }}%</div>
+        </div>
+      </div>
+    </van-cell-group>
     <div class="button-wrap">
       <van-button block round type="danger" @click="handleSubmit">保存</van-button>
     </div>
@@ -71,7 +105,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, Ref, watch } from 'vue';
-import { Popup as VanPopup, Switch as VanSwitch, Field as VanField, Toast } from 'vant';
+import { Popup as VanPopup, Switch as VanSwitch, Field as VanField, Toast, Slider as VanSlider } from 'vant';
 import Upload, { UploadExpose } from '@/components/Upload/Upload.vue';
 import CropperVue from '@/components/Cropper/Cropper.vue';
 import RadioTagVue from '@/components/RadioTag/RadioTag.vue';
@@ -79,6 +113,7 @@ import { LayoutSettingData } from '@/common/types';
 import { dataURLtoBlob } from '@/common/util';
 import { Chrome } from '@ckpack/vue-color';
 import { useStore } from '@/store';
+import { DEFAULT_LAYOUT_SETTING } from '@/conf/conf';
 
 type TempColor = {
   rgba?: { r: number, g: number, b: number, a: number }
@@ -90,12 +125,7 @@ const displayModeList = [
   { label: '平铺', value: 'background-size:contain;background-repeat:repeat' },
 ];
 const store = useStore();
-const layoutSetting: Ref<LayoutSettingData> = ref({
-  displayMode: 'background-size:cover',
-  networkUrl: '',
-  bg: '',
-  color: '',
-});
+const layoutSetting: Ref<LayoutSettingData> = ref(DEFAULT_LAYOUT_SETTING);
 const uploadRef = ref<InstanceType<typeof Upload> & UploadExpose>();
 const showPopup = ref(false);
 const tempImage = ref('');
@@ -163,6 +193,12 @@ watch(tempColor, (val) => {
 </script>
 
 <style lang="less">
+@import url("../index.less");
+.tip {
+  color: #999;
+  font-size: var(--font-xs);
+  padding: 16px 32px;
+}
 .bg-wrap {
   display: flex;
   flex-flow: row nowrap;

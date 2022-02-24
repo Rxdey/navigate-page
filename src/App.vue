@@ -8,26 +8,24 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import localforage from 'localforage';
 import SettingVue from '@/container/Setting/Setting.vue';
 import SearchBarVue from '@/container/SearchBar/SearchBar.vue';
 import BackgroundVue from '@/container/Background/Background.vue';
-import useIndexedDb, { CreateStore } from '@/common/indexedDB';
-import { LayoutSettingData, ShortcutData } from '@/common/types';
+import { UPDATE_LAYOUT_SETTING, UPDATE_SHORTCUT_LIST } from '@/store/conf';
 import { useStore } from '@/store';
 
 const store = useStore();
-onMounted(async () => {
-  const layout: CreateStore<LayoutSettingData> = useIndexedDb.useStore('layout');
-  const layoutSetting = await layout.findAll();
-  if (layoutSetting) {
-    store.commit('SAVE_LAYOUT_SETTING', layoutSetting.value);
-  }
-  const shortcut: CreateStore<ShortcutData> = useIndexedDb.useStore('shortcut');
-  const shortcutList = await shortcut.findAll();
-  console.log(shortcutList);
-  // if (shortcutList) {
-  //   store.commit('UPDATE_LAYOUT_SETTING', layoutSetting);
-  // }
+
+const initStore = async () => {
+  const layoutSetting = await localforage.getItem(UPDATE_LAYOUT_SETTING);
+  console.log(layoutSetting);
+  if (layoutSetting) store.commit(UPDATE_LAYOUT_SETTING, layoutSetting);
+  const shortcutList = await localforage.getItem(UPDATE_SHORTCUT_LIST);
+  if (shortcutList) store.commit(UPDATE_SHORTCUT_LIST, shortcutList);
+};
+onMounted(() => {
+  initStore();
 });
 </script>
 

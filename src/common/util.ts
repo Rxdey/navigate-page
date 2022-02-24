@@ -1,5 +1,5 @@
 import { PropType } from './types';
-import { DATABASE_NAME as PREFIX } from './conf';
+import { DATABASE_NAME as PREFIX } from '../conf/conf';
 /**
  * localStorage 同域名增加pathname前缀
  */

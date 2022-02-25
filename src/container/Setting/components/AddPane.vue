@@ -1,105 +1,107 @@
 <template>
-  <section class="AddPane">
-    <van-cell-group title="自定义导航">
-      <van-field label="网站地址" v-model="form.sitUrl" placeholder="请输入网站地址"></van-field>
-      <van-field label="网站名称" v-model="form.sitName" placeholder="请输入网站名称"></van-field>
-    </van-cell-group>
-    <van-cell-group title="选择图标">
-      <div class="logo-wrap">
-        <div class="logo-prefix">
-          <div class="image-inner border-radius16" @click="clearIcon">
-            <div class="logo-inner" :style="{ backgroundColor: form.logoBgColor }">
-              <div
-                class="logo-img"
-                :style="{ backgroundImage: form.logoBg ? `url(${form.logoBg})` : '' }"
-              >
-                <span
-                  :style="{ fontSize: `${form.logoLabelSize / 100}rem`, color: form.logoColor }"
-                  v-if="!isSelectIcon"
-                >{{ form.logoLabel }}</span>
+  <section class="layout">
+    <div class="layout-wrap">
+      <van-cell-group title="自定义导航">
+        <van-field label="网站地址" v-model="form.sitUrl" placeholder="请输入网站地址"></van-field>
+        <van-field label="网站名称" v-model="form.sitName" placeholder="请输入网站名称"></van-field>
+      </van-cell-group>
+      <van-cell-group title="选择图标">
+        <div class="logo-wrap">
+          <div class="logo-prefix">
+            <div class="image-inner border-radius16" @click="clearIcon">
+              <div class="logo-inner" :style="{ backgroundColor: form.logoBgColor }">
+                <div
+                  class="logo-img"
+                  :style="{ backgroundImage: form.logoBg ? `url(${form.logoBg})` : '' }"
+                >
+                  <span
+                    :style="{ fontSize: `${form.logoLabelSize / 100}rem`, color: form.logoColor }"
+                    v-if="!isSelectIcon"
+                  >{{ form.logoLabel }}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="logo-list">
-          <div
-            class="logo-inner image-inner"
-            :class="{ selected: isSelectIcon }"
-            @click="handleSelectIcon"
-          >
-            <div class="logo-img" :style="{ backgroundImage: tempIco ? `url(${tempIco})` : '' }"></div>
-          </div>
-          <div class="logo-label van-hairline--bottom" v-show="!isSelectIcon">
-            <input v-model="form.logoLabel" type="text" placeholder="图标文字(可选)" />
-          </div>
-        </div>
-        <div class="logo-after">
-          <div class="logo-inner upload" @click="handleChooseImage">
-            <van-icon name="plus" size=".65rem" color="#C3C3C3" />
-          </div>
-        </div>
-      </div>
-    </van-cell-group>
-    <van-cell-group v-if="!isSelectIcon">
-      <template #title>
-        <div class="group-title">
-          字体大小
-          <span
-            class="title-right font-color-picker"
-            @click.stop="showFontColorPicker = !showFontColorPicker"
-          ></span>
-        </div>
-      </template>
-
-      <div class="slider">
-        <div class="slider-wrap">
-          <div class="slider-content">
-            <van-slider
-              v-model="form.logoLabelSize"
-              :step="1"
-              :max="100"
-              :min="30"
-              active-color="#333"
-              button-size="0.4rem"
-            />
-          </div>
-          <div>{{ form.logoLabelSize }}</div>
-        </div>
-        <div class="color-picker" v-show="showFontColorPicker" @click.stop>
-          <Chrome v-model="tempFontColor" />
-        </div>
-      </div>
-    </van-cell-group>
-    <van-cell-group title="背景颜色">
-      <div class="logo-color">
-        <div class="color-list">
-          <div class="color-item" v-for="(color, i) in colorList" :key="i">
-            <div class="color-box image-inner">
-              <span
-                class="color-inner"
-                :style="{ backgroundColor: color }"
-                @click="setColorActive(i)"
-              >
-                <van-icon v-show="colorActive === i" class="color-checked" name="success" />
-              </span>
-            </div>
-          </div>
-          <div class="color-item">
+          <div class="logo-list">
             <div
-              class="color-box image-inner picker"
-              @click.stop="showColorPicker = !showColorPicker"
+              class="logo-inner image-inner"
+              :class="{ selected: isSelectIcon }"
+              @click="handleSelectIcon"
             >
-              <span class="color-inner">
-                <van-icon v-show="tempActive" class="color-checked" name="success" />
-              </span>
+              <div class="logo-img" :style="{ backgroundImage: tempIco ? `url(${tempIco})` : '' }"></div>
+            </div>
+            <div class="logo-label van-hairline--bottom" v-show="!isSelectIcon">
+              <input v-model="form.logoLabel" type="text" placeholder="图标文字(可选)" />
+            </div>
+          </div>
+          <div class="logo-after">
+            <div class="logo-inner upload" @click="handleChooseImage">
+              <van-icon name="plus" size=".65rem" color="#C3C3C3" />
             </div>
           </div>
         </div>
-        <div class="color-picker" v-show="showColorPicker" @click.stop>
-          <Chrome v-model="tempColor" />
+      </van-cell-group>
+      <van-cell-group v-if="!isSelectIcon">
+        <template #title>
+          <div class="group-title">
+            字体大小
+            <span
+              class="title-right font-color-picker"
+              @click.stop="showFontColorPicker = !showFontColorPicker"
+            ></span>
+          </div>
+        </template>
+
+        <div class="slider">
+          <div class="slider-wrap">
+            <div class="slider-content">
+              <van-slider
+                v-model="form.logoLabelSize"
+                :step="1"
+                :max="100"
+                :min="30"
+                active-color="#333"
+                button-size="0.4rem"
+              />
+            </div>
+            <div>{{ form.logoLabelSize }}</div>
+          </div>
+          <div class="color-picker" v-show="showFontColorPicker" @click.stop>
+            <Chrome v-model="tempFontColor" />
+          </div>
         </div>
-      </div>
-    </van-cell-group>
+      </van-cell-group>
+      <van-cell-group title="背景颜色">
+        <div class="logo-color">
+          <div class="color-list">
+            <div class="color-item" v-for="(color, i) in colorList" :key="i">
+              <div class="color-box image-inner">
+                <span
+                  class="color-inner"
+                  :style="{ backgroundColor: color }"
+                  @click="setColorActive(i)"
+                >
+                  <van-icon v-show="colorActive === i" class="color-checked" name="success" />
+                </span>
+              </div>
+            </div>
+            <div class="color-item">
+              <div
+                class="color-box image-inner picker"
+                @click.stop="showColorPicker = !showColorPicker"
+              >
+                <span class="color-inner">
+                  <van-icon v-show="tempActive" class="color-checked" name="success" />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="color-picker" v-show="showColorPicker" @click.stop>
+            <Chrome v-model="tempColor" />
+          </div>
+        </div>
+      </van-cell-group>
+    </div>
 
     <div class="button-wrap">
       <van-button block round type="danger" @click="handleSubmit">添加</van-button>
@@ -258,7 +260,7 @@ watch(tempFontColor, (val) => {
 </script>
 
 <style lang="less">
-@import url('../index.less');
+@import url("../index.less");
 :root {
   --logo-size: 90px;
 }

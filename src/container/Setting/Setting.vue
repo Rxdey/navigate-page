@@ -1,6 +1,6 @@
 <template>
   <div class="setting-button">
-    <van-icon name="bar-chart-o" size=".7rem" color="#fff" @click="showPopup"/>
+    <van-icon name="bar-chart-o" size=".7rem" color="#fff" @click="showPopup" />
   </div>
   <van-popup
     v-model:show="show"
@@ -9,6 +9,7 @@
     round
     closeable
     teleport="body"
+    class="current-popup"
   >
     <van-tabs v-model:active="active" animated color="#fc7c79">
       <van-tab title="添加">
@@ -38,6 +39,22 @@ const showPopup = () => {
 <!-- favicon.ico -->
 
 <style lang="less">
+.current-popup {
+  overflow: hidden;
+}
+.van-tabs {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  .van-tabs__content {
+    flex: 1;
+    min-height: 100px;
+    .van-tab__pane {
+      height: 100%;
+      // overflow-y: auto;
+    }
+  }
+}
 .setting-button {
   position: fixed;
   bottom: 32px;

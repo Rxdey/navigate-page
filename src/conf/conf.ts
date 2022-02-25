@@ -9,7 +9,7 @@ export const DEFAULT_LAYOUT_SETTING: LayoutSettingData = {
   bg: '',
   color: '',
   filter: 0,
-  mask: 0,
+  mask: 30,
 };
 
 /**

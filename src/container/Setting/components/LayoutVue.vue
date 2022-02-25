@@ -1,95 +1,95 @@
 <template>
   <div class="layout">
     <p class="tip">请注意，预览效果不会被保存，请手动保存</p>
-    <van-cell-group title="背景图片">
-      <van-cell center title="网络图片">
-        <template #right-icon>
-          <van-switch v-model="checked" size="24" />
+    <div class="layout-wrap">
+      <van-cell-group title="背景图片">
+        <van-cell center title="网络图片">
+          <template #right-icon>
+            <van-switch v-model="checked" size="24" />
+          </template>
+        </van-cell>
+        <van-field
+          label="图片地址"
+          v-model="layoutSetting.networkUrl"
+          placeholder="请输入图片地址"
+          v-if="checked"
+        ></van-field>
+        <van-cell center title="开启裁剪模式" label="仅上传本地图片生效" v-show="!checked">
+          <template #right-icon>
+            <van-switch v-model="isCut" size="24" />
+          </template>
+        </van-cell>
+        <div class="bg-wrap box-padding">
+          <div class="bg-item">
+            <div class="current-image image-inner">
+              <div
+                class="current-image__inner"
+                :style="`background-color: ${layoutSetting.color};background-image:url(${currentBg});${layoutSetting.displayMode}`"
+              ></div>
+            </div>
+          </div>
+          <div class="bg-item" v-show="!checked">
+            <div class="current-image upload" @click="handleUplpad">
+              <van-icon name="plus" size=".65rem" color="#C3C3C3" />
+            </div>
+          </div>
+        </div>
+      </van-cell-group>
+      <van-cell-group>
+        <template #title>
+          <div class="group-title">
+            展示方式
+            <span
+              class="title-right font-color-picker"
+              @click.stop="showFontColorPicker = !showFontColorPicker"
+            ></span>
+          </div>
         </template>
-      </van-cell>
-      <van-field
-        label="图片地址"
-        v-model="layoutSetting.networkUrl"
-        placeholder="请输入图片地址"
-        v-if="checked"
-      ></van-field>
-      <van-cell center title="开启裁剪模式" label="仅上传本地图片生效" v-show="!checked">
-        <template #right-icon>
-          <van-switch v-model="isCut" size="24" />
-        </template>
-      </van-cell>
-      <div class="bg-wrap box-padding">
-        <div class="bg-item">
-          <div class="current-image image-inner">
-            <div
-              class="current-image__inner"
-              :style="`background-color: ${layoutSetting.color};background-image:url(${currentBg});${layoutSetting.displayMode}`"
-            ></div>
+        <div class="box-padding">
+          <RadioTagVue :options="displayModeList" v-model="layoutSetting.displayMode" />
+        </div>
+        <div class="picker-wrap" v-show="showFontColorPicker" @click.stop>
+          <Chrome v-model="tempColor" />
+        </div>
+      </van-cell-group>
+      <van-cell-group title="遮罩层">
+        <div class="slider">
+          <div class="slider-wrap">
+            <div class="slider-content">
+              <van-slider
+                v-model="layoutSetting.mask"
+                :step="1"
+                :max="100"
+                :min="0"
+                active-color="#333"
+                button-size="0.4rem"
+              />
+            </div>
+            <div>{{ layoutSetting.mask || 0 }}%</div>
           </div>
         </div>
-        <div class="bg-item" v-show="!checked">
-          <div class="current-image upload" @click="handleUplpad">
-            <van-icon name="plus" size=".65rem" color="#C3C3C3" />
+      </van-cell-group>
+      <van-cell-group title="背景模糊">
+        <div class="slider">
+          <div class="slider-wrap">
+            <div class="slider-content">
+              <van-slider
+                v-model="layoutSetting.filter"
+                :step="1"
+                :max="100"
+                :min="0"
+                active-color="#333"
+                button-size="0.4rem"
+              />
+            </div>
+            <div>{{ layoutSetting.filter || 0 }}%</div>
           </div>
         </div>
-      </div>
-    </van-cell-group>
-
-    <van-cell-group>
-      <template #title>
-        <div class="group-title">
-          展示方式
-          <span
-            class="title-right font-color-picker"
-            @click.stop="showFontColorPicker = !showFontColorPicker"
-          ></span>
-        </div>
-      </template>
-      <div class="box-padding">
-        <RadioTagVue :options="displayModeList" v-model="layoutSetting.displayMode" />
-      </div>
-      <div class="picker-wrap" v-show="showFontColorPicker" @click.stop>
-        <Chrome v-model="tempColor" />
-      </div>
-    </van-cell-group>
-    <van-cell-group title="遮罩层">
-      <div class="slider">
-        <div class="slider-wrap">
-          <div class="slider-content">
-            <van-slider
-              v-model="layoutSetting.mask"
-              :step="1"
-              :max="100"
-              :min="0"
-              active-color="#333"
-              button-size="0.4rem"
-            />
-          </div>
-          <div>{{ layoutSetting.mask || 0 }}%</div>
-        </div>
-      </div>
-    </van-cell-group>
-    <van-cell-group title="背景模糊">
-      <div class="slider">
-        <div class="slider-wrap">
-          <div class="slider-content">
-            <van-slider
-              v-model="layoutSetting.filter"
-              :step="1"
-              :max="100"
-              :min="0"
-              active-color="#333"
-              button-size="0.4rem"
-            />
-          </div>
-          <div>{{ layoutSetting.filter || 0 }}%</div>
-        </div>
-      </div>
-    </van-cell-group>
+      </van-cell-group>
+    </div>
     <div class="button-wrap">
       <van-button block round type="danger" @click="handleSubmit">保存</van-button>
     </div>
-
     <Upload ref="uploadRef" @upload="onUpload" :blob="isCut" :limit="1540"></Upload>
   </div>
   <!-- 裁剪 -->
@@ -194,6 +194,7 @@ watch(tempColor, (val) => {
 
 <style lang="less">
 @import url("../index.less");
+
 .tip {
   color: #999;
   font-size: var(--font-xs);

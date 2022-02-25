@@ -19,3 +19,18 @@
     right: 72px;
   }
 }
+
+.layout {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  &-wrap {
+    flex: 1;
+    min-height: 100px;
+    overflow-y: auto;
+  }
+}
+
+.button-wrap {
+  padding: calc(var(--box-padding) / 2) var(--box-padding);
+}

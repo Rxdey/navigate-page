@@ -1,3 +1,18 @@
+.layout {
+  --logo-size: 90px;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  &-wrap {
+    flex: 1;
+    min-height: 100px;
+    overflow-y: auto;
+  }
+}
+
+.button-wrap {
+  padding: calc(var(--box-padding) / 2) var(--box-padding);
+}
 .slider {
   margin-bottom: 16px;
   padding: 0 var(--box-padding);
@@ -18,19 +33,4 @@
     z-index: 10;
     right: 72px;
   }
-}
-
-.layout {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  &-wrap {
-    flex: 1;
-    min-height: 100px;
-    overflow-y: auto;
-  }
-}
-
-.button-wrap {
-  padding: calc(var(--box-padding) / 2) var(--box-padding);
 }

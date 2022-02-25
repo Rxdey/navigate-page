@@ -261,9 +261,6 @@ watch(tempFontColor, (val) => {
 
 <style lang="less">
 @import url("../index.less");
-:root {
-  --logo-size: 90px;
-}
 .line {
   content: "";
   position: absolute;

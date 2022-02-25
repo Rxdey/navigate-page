@@ -1,6 +1,6 @@
 <template>
-  <div class="SearchBar">
-    <div class="search-bar">
+  <div class="search-bar">
+    <div class="search-bar--wrap">
       <div class="search-bar__icon">
         <!-- <rx-icon name="icon-bianji" size=".507rem" /> -->
         <van-icon name="edit" size=".507rem"/>
@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, Ref } from 'vue';
-import { throttle } from 'lodash-es';
+// import { throttle } from 'lodash-es';
 import { baidu } from '@/service/model';
 
 const searchValue = ref('');
@@ -80,70 +80,5 @@ const handleSearch = (item: string) => {
 </script>
 
 <style lang="less">
-.SearchBar {
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 88%;
-  max-width: 980px;
-  // margin: 0 auto;
-}
-.search-bar {
-  display: flex;
-  flex-flow: row nowrap;
-  padding: 0 28px;
-  border-radius: 50px;
-  overflow: hidden;
-  align-items: center;
-  background-color: #fff;
-  position: relative;
-  &__icon {
-  }
-  &__content {
-    flex: 1;
-    min-width: 1px;
-    padding: 0 16px;
-    .custom-input {
-      appearance: none;
-      width: 100%;
-      height: var(--input-height);
-      font-size: var(--font-s);
-      background: transparent;
-      border: none;
-      outline: none;
-      -webkit-appearance: textfield;
-      &::-webkit-search-decoration,
-      &::-webkit-search-cancel-button {
-        display: none;
-      }
-    }
-  }
-  &__clear {
-    cursor: pointer;
-  }
-}
-.search-drop {
-  position: relative;
-  background-color: #fff;
-  border-radius: calc(var(--input-height) / 2);
-  margin-top: 8px;
-  overflow: hidden;
-  .search-list {
-    max-height: 400px;
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    &__item {
-      padding: 0 28px;
-      min-height: var(--input-height);
-      font-size: var(--font-s);
-      line-height: var(--input-height);
-      &:active {
-        background-color: #e5e5e5;
-      }
-    }
-  }
-}
+@import url('./index.less');
 </style>

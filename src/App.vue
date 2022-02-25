@@ -1,6 +1,7 @@
 <template>
   <div class="navigate-wrap">
     <SearchBarVue />
+    <ShortcutVue />
     <SettingVue />
   </div>
   <BackgroundVue />
@@ -12,6 +13,7 @@ import localforage from 'localforage';
 import SettingVue from '@/container/Setting/Setting.vue';
 import SearchBarVue from '@/container/SearchBar/SearchBar.vue';
 import BackgroundVue from '@/container/Background/Background.vue';
+import ShortcutVue from '@/container/Shortcut/Shortcut.vue';
 import { UPDATE_LAYOUT_SETTING, UPDATE_SHORTCUT_LIST } from '@/store/conf';
 import { useStore } from '@/store';
 

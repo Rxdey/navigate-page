@@ -1,5 +1,5 @@
 <template>
-  <div class="layout">
+  <section class="layout">
     <p class="tip">请注意，预览效果不会被保存，请手动保存</p>
     <div class="layout-wrap">
       <van-cell-group title="背景图片">
@@ -91,7 +91,7 @@
       <van-button block round type="danger" @click="handleSubmit">保存</van-button>
     </div>
     <Upload ref="uploadRef" @upload="onUpload" :blob="isCut" :limit="1540"></Upload>
-  </div>
+  </section>
   <!-- 裁剪 -->
   <van-popup v-model:show="showPopup" position="bottom" :style="{ height: '100%' }" teleport="body">
     <CropperVue

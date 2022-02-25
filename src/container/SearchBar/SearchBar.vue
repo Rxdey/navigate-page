@@ -1,9 +1,11 @@
 <template>
-  <div class="search-bar">
+  <div
+    class="search-bar"
+    :style="searchStyle"
+  >
     <div class="search-bar--wrap">
       <div class="search-bar__icon">
-        <!-- <rx-icon name="icon-bianji" size=".507rem" /> -->
-        <van-icon name="edit" size=".507rem"/>
+        <van-icon name="edit" size=".507rem" />
       </div>
       <div class="search-bar__content">
         <input
@@ -19,8 +21,7 @@
         />
       </div>
       <div class="search-bar__clear" @click="clearSearchValue">
-        <!-- <rx-icon name="icon-31guanbi" size=".507rem" v-show="showClear" /> -->
-        <van-icon name="cross" size=".507rem" v-show="showClear"/>
+        <van-icon name="cross" size=".507rem" v-show="showClear" />
       </div>
     </div>
     <div class="search-drop">
@@ -37,15 +38,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, Ref } from 'vue';
-// import { throttle } from 'lodash-es';
+import { ref, onMounted, computed, Ref, watch, StyleValue } from 'vue';
 import { baidu } from '@/service/model';
+import { useStore } from '@/store';
 
+const store = useStore();
 const searchValue = ref('');
 // 上次搜索文本，防止多余搜索
 const lastValue = ref('');
 const showClear = ref(false);
 const searchList: Ref<Array<string>> = ref([]);
+const searchStyle = computed(() => store.getters.getSearchStyle);
 
 // 获取百度候选词
 const getWaitData = async () => {
@@ -69,7 +72,6 @@ const onInput = () => {
   setClear();
   getWaitData();
 };
-
 const clearSearchValue = () => {
   searchValue.value = '';
   setClear();
@@ -80,5 +82,5 @@ const handleSearch = (item: string) => {
 </script>
 
 <style lang="less">
-@import url('./index.less');
+@import url("./index.less");
 </style>

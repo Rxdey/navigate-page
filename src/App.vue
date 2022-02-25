@@ -21,7 +21,6 @@ const store = useStore();
 
 const initStore = async () => {
   const layoutSetting = await localforage.getItem(UPDATE_LAYOUT_SETTING);
-  console.log(layoutSetting);
   if (layoutSetting) store.commit(UPDATE_LAYOUT_SETTING, layoutSetting);
   const shortcutList = await localforage.getItem(UPDATE_SHORTCUT_LIST);
   if (shortcutList) store.commit(UPDATE_SHORTCUT_LIST, shortcutList);

@@ -1,5 +1,5 @@
-export interface PropType {
-  [key: number | string]: any
+export interface PropType<T> {
+  [key: number|string]: T
 }
 /**
  * 快捷导航
@@ -38,15 +38,16 @@ export interface LayoutSettingData {
  */
 export interface GlobalSettingData {
   grid: {
-    row: number,
-    column: number,
-    scale: number
+    row: number;
+    column: number;
+    scale: number;
   };
   searchBar: {
-    radius: number,
-    positionY: number
+    radius: number;
+    positionY: number;
+    width: number;
   };
   view: {
-    scale: number
+    scale: number;
   }
 }

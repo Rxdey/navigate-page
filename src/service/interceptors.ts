@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
 import qs from 'qs';
-import { PropType } from '@/common/types';
 
 axios.defaults.withCredentials = true;
 

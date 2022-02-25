@@ -1,6 +1,7 @@
-import { ShortcutData, LayoutSettingData } from '@/common/types';
+import { ShortcutData, LayoutSettingData, GlobalSettingData } from '@/common/types';
 
 export interface StateData {
   shortcutList: ShortcutData[],
-  layoutSetting: LayoutSettingData
+  layoutSetting: LayoutSettingData,
+  globalSetting: GlobalSettingData
 }

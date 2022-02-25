@@ -1,7 +1,8 @@
 import { createApp } from 'vue';
 import { Cell, CellGroup, Icon, Button } from 'vant';
-import 'lib-flexible';
 import localforage from 'localforage';
+import 'lib-flexible';
+// import '@vant/touch-emulator';
 import RxIcon from '@/components/RxIcon/RxIcon.vue';
 import { DATABASE_NAME } from '@/conf/conf';
 import store, { key } from './store';

@@ -124,6 +124,7 @@ const displayModeList = [
   { label: '适应', value: 'background-size:contain' },
   { label: '平铺', value: 'background-size:contain;background-repeat:repeat' },
 ];
+
 const store = useStore();
 const layoutSetting: Ref<LayoutSettingData> = ref(DEFAULT_LAYOUT_SETTING);
 const uploadRef = ref<InstanceType<typeof Upload> & UploadExpose>();
@@ -140,7 +141,8 @@ onMounted(() => {
   document.body.addEventListener('click', () => {
     showFontColorPicker.value = false;
   });
-  layoutSetting.value = store.state.layoutSetting;
+  // 状态会同步更改掉，不推荐，但是还行，当预览用
+  layoutSetting.value = store.getters.getLayoutSetting;
   tempColor.value = layoutSetting.value.color || '';
   if (layoutSetting.value.networkUrl) {
     checked.value = true;

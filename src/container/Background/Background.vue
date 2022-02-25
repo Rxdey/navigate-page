@@ -1,24 +1,19 @@
 <template>
   <teleport to="body">
-    <div
-      class="background"
-      :style="`background-color: ${layoutSetting.color};background-image:url(${currentBg});${layoutSetting.displayMode}; filter: blur(${(layoutSetting.filter || 0) * 0.2}px);${layoutSetting.filter ? 'transform:scale(1.04)' : ''}`"
-    >
-    <div class="background-mask" :style="{backgroundColor: `rgba(0,0,0, ${(layoutSetting.mask || 0) * 0.01})`}"></div>
+    <div class="background" :style="layoutSetting">
+      <div class="background-mask"></div>
     </div>
   </teleport>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import { useStore } from '@/store';
 import { dataURLtoBlob } from '@/common/util';
 
 const store = useStore();
 
-const layoutSetting = computed(() => store.state.layoutSetting);
-
-const currentBg = computed(() => (layoutSetting.value.networkUrl ? layoutSetting.value.networkUrl : window.URL.createObjectURL(dataURLtoBlob(layoutSetting.value.bg) || new Blob())));
+const layoutSetting = computed(() => store.getters.getLayoutStyle);
 
 </script>
 
@@ -30,7 +25,9 @@ const currentBg = computed(() => (layoutSetting.value.networkUrl ? layoutSetting
   right: 0;
   bottom: 0;
   z-index: 1;
-  background-color: #333;
+  background-color: var(--background-color);
+  background-image: var(--background-bg);
+  filter: blur(var(--background-filter));
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -41,6 +38,6 @@ const currentBg = computed(() => (layoutSetting.value.networkUrl ? layoutSetting
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,.1);
+  background-color: rgba(0, 0, 0, var(--background-mask));
 }
 </style>

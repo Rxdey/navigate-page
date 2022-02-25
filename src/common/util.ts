@@ -113,7 +113,7 @@ export const changeTitle = (title: string) => {
  * @param {Object} target 目标对象
  * @param {Object} origin 源对象
  */
-export const mergeObj = (target: PropType, origin: PropType) => {
+export const mergeObj = (target: PropType<any>, origin: PropType<any>) => {
   if (!target) target = {};
   Object.keys(origin).forEach((key) => {
     if (target[key]) {

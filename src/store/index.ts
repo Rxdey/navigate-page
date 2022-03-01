@@ -41,6 +41,7 @@ const store = createStore<StateData>({
       const { color, displayMode, filter, mask, bg, networkUrl } = state.layoutSetting;
       let style: PropType<string> = {};
       style['--background-color'] = color || '';
+      // 因为预览属性变更会多次触发渲染，这里就直接用base64显示了
       style['--background-bg'] = `url('${networkUrl || bg}')`;
       style['--background-filter'] = `${(filter || 0) * 0.2}px`;
       style['--background-mask'] = `${(mask || 0) * 0.01}`;
@@ -64,6 +65,17 @@ const store = createStore<StateData>({
       searchStyle['--search-radius'] = `${radius / 166.6}rem`;
       searchStyle['--search-width'] = `${width}%`;
       return searchStyle;
+    },
+    getShortcutList(state) {
+      const { shortcutList } = state;
+      return shortcutList.map((item) => {
+        const { logoBg } = item;
+        const tempBg = logoBg ? window.URL.createObjectURL(dataURLtoBlob(logoBg) || new Blob()) : '';
+        return {
+          ...item,
+          backgroundImage: tempBg || item.logoUrl || '',
+        };
+      });
     },
   },
   plugins: [keepStateDataPlugin],

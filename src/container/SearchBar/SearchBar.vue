@@ -1,7 +1,6 @@
 <template>
-  <div
+  <section
     class="search-bar"
-    :style="searchStyle"
   >
     <div class="search-bar--wrap">
       <div class="search-bar__icon">
@@ -34,11 +33,11 @@
         >{{ item }}</li>
       </ul>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, Ref, watch, StyleValue } from 'vue';
+import { ref, computed, Ref } from 'vue';
 import { baidu } from '@/service/model';
 import { useStore } from '@/store';
 
@@ -48,7 +47,6 @@ const searchValue = ref('');
 const lastValue = ref('');
 const showClear = ref(false);
 const searchList: Ref<Array<string>> = ref([]);
-const searchStyle = computed(() => store.getters.getSearchStyle);
 
 // 获取百度候选词
 const getWaitData = async () => {

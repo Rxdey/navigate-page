@@ -19,6 +19,7 @@
             <van-switch v-model="isCut" size="24" />
           </template>
         </van-cell>
+        <p class="tip">请控制本地图片大小最好不要超过5兆</p>
         <div class="bg-wrap box-padding">
           <div class="bg-item">
             <div class="current-image image-inner">

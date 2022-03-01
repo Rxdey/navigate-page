@@ -1,7 +1,9 @@
 <template>
   <div class="navigate-wrap" v-if="renderPage">
-    <SearchBarVue />
-    <ShortcutVue />
+    <div class="navigate-content" :style="searchStyle">
+      <SearchBarVue />
+      <ShortcutVue />
+    </div>
     <SettingVue />
   </div>
   <BackgroundVue />
@@ -19,6 +21,7 @@ import { useStore } from '@/store';
 
 const store = useStore();
 const renderPage = ref(false);
+const searchStyle = computed(() => store.getters.getSearchStyle);
 
 const initStore = async () => {
   try {
@@ -50,5 +53,10 @@ body,
   width: 100%;
   height: 100%;
   z-index: 10;
+}
+.navigate-content {
+  position: absolute;
+  width: 100%;
+  top: var(--search-margin-top);
 }
 </style>

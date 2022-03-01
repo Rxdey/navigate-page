@@ -14,7 +14,7 @@
       <van-cell-group :title="checked ? '选择图标' : '图标'">
         <div class="logo-wrap">
           <div class="logo-prefix">
-            <div class="image-inner border-radius16" @click="clearIcon">
+            <div class="image-inner" @click="clearIcon">
               <div class="logo-inner" :style="{ backgroundColor: form.logoBgColor }">
                 <div
                   class="logo-img"
@@ -215,8 +215,13 @@ const handleSubmit = () => {
   if (!/[http|https]:\/\//.test(form.value.sitUrl || '')) {
     form.value.sitUrl = `http://${form.value.sitUrl}`;
   }
-  const { shortcutList } = JSON.parse(JSON.stringify(store.state));
+  let shortcutList: ShortcutData[] = JSON.parse(JSON.stringify(store.state.shortcutList));
   shortcutList.push(form.value);
+  if (checked.value) {
+    shortcutList = shortcutList.map((item) => ({ ...item, logoBg: '' }));
+  } else {
+    shortcutList = shortcutList.map((item) => ({ ...item, logoUrl: '' }));
+  }
   store.commit(UPDATE_SHORTCUT_LIST, JSON.parse(JSON.stringify(shortcutList)));
   Toast.success('添加成功');
   tempIco.value = '';
@@ -287,9 +292,9 @@ watch(tempFontColor, (val) => {
   padding: 0 var(--box-padding);
   margin-bottom: 16px;
   .logo-inner {
-    width: var(--logo-size);
-    height: var(--logo-size);
-    border-radius: 16px;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    border-radius: var(--icon-radius);
     overflow: hidden;
     text-align: center;
     display: flex;
@@ -298,7 +303,7 @@ watch(tempFontColor, (val) => {
     cursor: pointer;
     color: #fff;
     font-weight: bold;
-    line-height: var(--logo-size);
+    line-height: var(--icon-size);
     font-size: var(--font-s);
     &.selected {
       box-shadow: 0 0 10px #009688;
@@ -327,6 +332,9 @@ watch(tempFontColor, (val) => {
   .logo-prefix {
     padding-right: 16px;
     position: relative;
+    .image-inner {
+      border-radius: var(--icon-radius);
+    }
     &::after {
       right: 0;
       .line;

@@ -1,7 +1,7 @@
 <template>
-  <div class="setting-button">
+  <section class="setting-button">
     <van-icon name="bar-chart-o" size=".7rem" color="#fff" @click="showPopup" />
-  </div>
+  </section>
   <van-popup
     v-model:show="show"
     :position="popupSetting.position"

@@ -1,0 +1,40 @@
+.shortcut {
+  --icon-label-color: #fff;
+  --icon-row: 4;
+  --icon-colum: 4;
+  position: relative;
+  padding: 16px;
+  width: 100%;
+  &--list {
+      display: grid;
+      grid-template-columns: repeat(var(--icon-colum), calc(100% / var(--icon-colum)));
+      row-gap: 32px;
+    //   column-gap: 32px;
+  }
+  &--item {
+      margin: 0 auto;
+    //   margin-bottom: 32px;
+    width: calc(var(--icon-size) * 1.5);
+  }
+  &__icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    border-radius: var(--icon-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    overflow: hidden;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+    margin: 0 auto 10px auto;
+  }
+  &__label {
+      color: var(--icon-label-color);
+      text-align: center;
+      font-size: 24px;
+  }
+}

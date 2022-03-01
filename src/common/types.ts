@@ -15,6 +15,7 @@ export interface ShortcutData {
   logoLabelSize: number;
   sitName?: string;
   sitUrl?: string;
+  logoUrl?: string;
 }
 /**
  * 背景设置

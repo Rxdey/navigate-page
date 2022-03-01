@@ -1,22 +1,36 @@
 <template>
   <section class="layout">
-    <div class="layout-wrap">
+    <p class="tip">请注意，预览效果不会被保存，请手动保存</p>
+    <div class="layout-wrap" v-if="globalSetting">
       <van-cell-group title="搜索框位置">
-        <div class="slider">
-          <div class="slider-wrap">
-            <div class="slider-content">
-              <van-slider
-                v-model="searchBarSetting.positionY"
-                :step="1"
-                :max="100"
-                :min="0"
-                active-color="#333"
-                button-size="0.4rem"
-              />
-            </div>
-            <div>{{ searchBarSetting.positionY || 0 }}%</div>
-          </div>
-        </div>
+        <my-slider
+          v-model="globalSetting.searchBar.positionY"
+          :step="1"
+          :max="100"
+          :min="0"
+          active-color="#333"
+          button-size="0.4rem"
+        />
+      </van-cell-group>
+      <van-cell-group title="搜索框圆角">
+        <my-slider
+          v-model="globalSetting.searchBar.radius"
+          :step="1"
+          :max="100"
+          :min="0"
+          active-color="#333"
+          button-size="0.4rem"
+        />
+      </van-cell-group>
+      <van-cell-group title="搜索框宽度">
+        <my-slider
+          v-model="globalSetting.searchBar.width"
+          :step="1"
+          :max="100"
+          :min="60"
+          active-color="#333"
+          button-size="0.4rem"
+        />
       </van-cell-group>
     </div>
     <div class="button-wrap">
@@ -26,21 +40,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, Ref } from 'vue';
+import { ref, onMounted, computed, Ref, WritableComputedRef, watch } from 'vue';
 import { Switch as VanSwitch, Toast, Slider as VanSlider } from 'vant';
 import { useStore } from '@/store';
-import { GLOBAL_SETTING } from '@/conf/conf';
 import { GlobalSettingData } from '@/common/types';
+import { UPDATE_GLOBAL_SETTING } from '@/store/conf';
+import { DEFAULT_GLOBAL_SETTING } from '@/conf/conf';
 
 const store = useStore();
-const globalSetting = computed(() => store.state.globalSetting);
-const searchBarSetting = ref(GLOBAL_SETTING.searchBar);
-
-onMounted(() => { });
+const globalData = computed(() => store.state.globalSetting);
+const globalSetting: Ref<GlobalSettingData> = ref(DEFAULT_GLOBAL_SETTING);
 
 const handleSubmit = () => {
-  searchBarSetting.value = globalSetting.value.searchBar;
+  store.commit(UPDATE_GLOBAL_SETTING, JSON.parse(JSON.stringify(globalSetting.value)));
 };
+
+onMounted(() => {
+  globalSetting.value = JSON.parse(JSON.stringify(globalData.value));
+});
+
+watch(() => globalSetting.value, (val) => {
+  store.commit(`${UPDATE_GLOBAL_SETTING}_TEMP`, JSON.parse(JSON.stringify(val)));
+}, { deep: true });
 </script>
 
 <style lang="less">

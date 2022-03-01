@@ -4,15 +4,21 @@
       <van-cell-group title="自定义导航">
         <van-field label="网站地址" v-model="form.sitUrl" placeholder="请输入网站地址"></van-field>
         <van-field label="网站名称" v-model="form.sitName" placeholder="请输入网站名称"></van-field>
+        <van-cell center title="网络图标">
+          <template #right-icon>
+            <van-switch v-model="checked" size="24" />
+          </template>
+        </van-cell>
+        <van-field v-if="checked" label="图标地址" v-model="form.logoUrl" placeholder="请填写图标地址"></van-field>
       </van-cell-group>
-      <van-cell-group title="选择图标">
+      <van-cell-group :title="checked ? '选择图标' : '图标'">
         <div class="logo-wrap">
           <div class="logo-prefix">
             <div class="image-inner border-radius16" @click="clearIcon">
               <div class="logo-inner" :style="{ backgroundColor: form.logoBgColor }">
                 <div
                   class="logo-img"
-                  :style="{ backgroundImage: form.logoBg ? `url(${form.logoBg})` : '' }"
+                  :style="{ backgroundImage: `url(${currentBg || ''})`}"
                 >
                   <span
                     :style="{ fontSize: `${form.logoLabelSize / 100}rem`, color: form.logoColor }"
@@ -23,25 +29,30 @@
             </div>
           </div>
           <div class="logo-list">
-            <div
-              class="logo-inner image-inner"
-              :class="{ selected: isSelectIcon }"
-              @click="handleSelectIcon"
-            >
-              <div class="logo-img" :style="{ backgroundImage: tempIco ? `url(${tempIco})` : '' }"></div>
-            </div>
-            <div class="logo-label van-hairline--bottom" v-show="!isSelectIcon">
-              <input v-model="form.logoLabel" type="text" placeholder="图标文字(可选)" />
-            </div>
+            <template v-if="!checked">
+              <div
+                class="logo-inner image-inner"
+                :class="{ selected: isSelectIcon }"
+                @click="handleSelectIcon"
+              >
+                <div
+                  class="logo-img"
+                  :style="{ backgroundImage: tempIco ? `url(${tempIco})` : '' }"
+                ></div>
+              </div>
+              <div class="logo-label van-hairline--bottom" v-show="!isSelectIcon">
+                <input v-model="form.logoLabel" type="text" placeholder="图标文字(可选)" />
+              </div>
+            </template>
           </div>
           <div class="logo-after">
-            <div class="logo-inner upload" @click="handleChooseImage">
+            <div class="logo-inner upload" @click="handleChooseImage" v-if="!checked">
               <van-icon name="plus" size=".65rem" color="#C3C3C3" />
             </div>
           </div>
         </div>
       </van-cell-group>
-      <van-cell-group v-if="!isSelectIcon">
+      <van-cell-group v-if="!isSelectIcon && !checked">
         <template #title>
           <div class="group-title">
             字体大小
@@ -52,24 +63,18 @@
           </div>
         </template>
 
-        <div class="slider">
-          <div class="slider-wrap">
-            <div class="slider-content">
-              <van-slider
-                v-model="form.logoLabelSize"
-                :step="1"
-                :max="100"
-                :min="30"
-                active-color="#333"
-                button-size="0.4rem"
-              />
-            </div>
-            <div>{{ form.logoLabelSize }}</div>
-          </div>
+        <my-slider
+          v-model="form.logoLabelSize"
+          :step="1"
+          :max="100"
+          :min="30"
+          active-color="#333"
+          button-size="0.4rem"
+        >
           <div class="color-picker" v-show="showFontColorPicker" @click.stop>
             <Chrome v-model="tempFontColor" />
           </div>
-        </div>
+        </my-slider>
       </van-cell-group>
       <van-cell-group title="背景颜色">
         <div class="logo-color">
@@ -113,11 +118,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, watch, Ref } from 'vue';
-import { Field as VanField, Slider as VanSlider, Toast } from 'vant';
+import { Field as VanField, Toast, Switch as VanSwitch } from 'vant';
 import { Chrome } from '@ckpack/vue-color';
 import Upload, { UploadExpose } from '@/components/Upload/Upload.vue';
 import { ShortcutData } from '@/common/types';
 import { useStore } from '@/store';
+import { UPDATE_SHORTCUT_LIST } from '@/store/conf';
 
 type TempColor = {
   rgba?: { r: number, g: number, b: number, a: number }
@@ -131,6 +137,7 @@ const form: Ref<ShortcutData> = ref({
   logoBgColor: '',
   logoLabel: '',
   logoLabelSize: 37,
+  logoUrl: '',
 });
 const colorList = ref([
   'rgba(0,0,0,0)',
@@ -143,6 +150,7 @@ const colorList = ref([
 
 const colorActive = ref(0);
 const showColorPicker = ref(false);
+const checked = ref(false);
 const showFontColorPicker = ref(false);
 const tempActive = ref(false);
 const tempColor: Ref<string | TempColor> = ref({});
@@ -150,6 +158,7 @@ const tempFontColor: Ref<string | TempColor> = ref('rgba(255,255,255,1)');
 const tempIco = ref('');
 const isSelectIcon = ref(false);
 const uploadRef = ref<InstanceType<typeof Upload> & UploadExpose>();
+const currentBg = computed(() => (checked.value ? form.value.logoUrl : form.value.logoBg));
 
 onMounted(() => {
   document.body.addEventListener('click', () => {
@@ -206,9 +215,10 @@ const handleSubmit = () => {
   if (!/[http|https]:\/\//.test(form.value.sitUrl || '')) {
     form.value.sitUrl = `http://${form.value.sitUrl}`;
   }
-  const { shortcutList } = store.state;
+  const { shortcutList } = JSON.parse(JSON.stringify(store.state));
   shortcutList.push(form.value);
-  store.commit('UPDATE_SHORTCUT_LIST', JSON.parse(JSON.stringify(shortcutList)));
+  store.commit(UPDATE_SHORTCUT_LIST, JSON.parse(JSON.stringify(shortcutList)));
+  Toast.success('添加成功');
   tempIco.value = '';
   clearIcon();
   colorActive.value = 0;

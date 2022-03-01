@@ -7,11 +7,11 @@
     :position="popupSetting.position"
     :round="popupSetting.round"
     closeable
-    :overlay="false"
     teleport="body"
     class="current-popup"
+    :overlay-style="{backgroundColor: 'transparent'}"
   >
-    <van-tabs v-model:active="active" animated color="#fc7c79">
+    <van-tabs v-model:active="active" animated color="#fc7c79" lazy-render>
       <van-tab title="添加">
         <AddPaneVue />
       </van-tab>
@@ -20,6 +20,8 @@
       </van-tab>
       <van-tab title="全局">
         <GlobalVue />
+      </van-tab>
+      <van-tab title="设置">
       </van-tab>
     </van-tabs>
   </van-popup>
@@ -76,13 +78,13 @@ onMounted(() => {
   left: 32px;
 }
 .current-popup {
-  height: 80%;
+  height: 70%;
   overflow: hidden;
 }
 @media screen and (min-width: 680px) {
   .current-popup {
     height: 100%;
-    width: 600px;
+    width: 550px;
   }
 }
 </style>

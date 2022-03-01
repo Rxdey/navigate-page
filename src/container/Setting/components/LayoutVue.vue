@@ -53,44 +53,30 @@
         </div>
       </van-cell-group>
       <van-cell-group title="遮罩层">
-        <div class="slider">
-          <div class="slider-wrap">
-            <div class="slider-content">
-              <van-slider
-                v-model="layoutSetting.mask"
-                :step="1"
-                :max="100"
-                :min="0"
-                active-color="#333"
-                button-size="0.4rem"
-              />
-            </div>
-            <div>{{ layoutSetting.mask || 0 }}%</div>
-          </div>
-        </div>
+        <my-slider
+          v-model="layoutSetting.mask"
+          :step="1"
+          :max="100"
+          :min="0"
+          active-color="#333"
+          button-size="0.4rem"
+        />
       </van-cell-group>
       <van-cell-group title="背景模糊">
-        <div class="slider">
-          <div class="slider-wrap">
-            <div class="slider-content">
-              <van-slider
-                v-model="layoutSetting.filter"
-                :step="1"
-                :max="100"
-                :min="0"
-                active-color="#333"
-                button-size="0.4rem"
-              />
-            </div>
-            <div>{{ layoutSetting.filter || 0 }}%</div>
-          </div>
-        </div>
+        <my-slider
+          v-model="layoutSetting.filter"
+          :step="1"
+          :max="100"
+          :min="0"
+          active-color="#333"
+          button-size="0.4rem"
+        />
       </van-cell-group>
     </div>
     <div class="button-wrap">
       <van-button block round type="danger" @click="handleSubmit">保存</van-button>
     </div>
-    <Upload ref="uploadRef" @upload="onUpload" :blob="isCut" :limit="1540"></Upload>
+    <Upload ref="uploadRef" @upload="onUpload" :blob="isCut" :limit="3072"></Upload>
   </section>
   <!-- 裁剪 -->
   <van-popup v-model:show="showPopup" position="bottom" :style="{ height: '100%' }" teleport="body">
@@ -105,7 +91,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, Ref, watch } from 'vue';
-import { Popup as VanPopup, Switch as VanSwitch, Field as VanField, Toast, Slider as VanSlider } from 'vant';
+import { Popup as VanPopup, Switch as VanSwitch, Field as VanField, Toast } from 'vant';
 import Upload, { UploadExpose } from '@/components/Upload/Upload.vue';
 import CropperVue from '@/components/Cropper/Cropper.vue';
 import RadioTagVue from '@/components/RadioTag/RadioTag.vue';
@@ -114,6 +100,7 @@ import { dataURLtoBlob } from '@/common/util';
 import { Chrome } from '@ckpack/vue-color';
 import { useStore } from '@/store';
 import { DEFAULT_LAYOUT_SETTING } from '@/conf/conf';
+import { UPDATE_LAYOUT_SETTING } from '@/store/conf';
 
 type TempColor = {
   rgba?: { r: number, g: number, b: number, a: number }
@@ -141,8 +128,7 @@ onMounted(() => {
   document.body.addEventListener('click', () => {
     showFontColorPicker.value = false;
   });
-  // 状态会同步更改掉，不推荐，但是还行，当预览用
-  layoutSetting.value = store.getters.getLayoutSetting;
+  layoutSetting.value = JSON.parse(JSON.stringify(store.state.layoutSetting));
   tempColor.value = layoutSetting.value.color || '';
   if (layoutSetting.value.networkUrl) {
     checked.value = true;
@@ -157,7 +143,7 @@ const handleSubmit = () => {
   } else {
     saveData.networkUrl = '';
   }
-  store.commit('UPDATE_LAYOUT_SETTING', saveData);
+  store.commit(UPDATE_LAYOUT_SETTING, saveData);
   Toast.success('保存成功');
 };
 // 上传图片
@@ -192,16 +178,13 @@ watch(tempColor, (val) => {
   }
   layoutSetting.value.color = color;
 });
+watch(() => layoutSetting.value, (val) => {
+  store.commit(`${UPDATE_LAYOUT_SETTING}_TEMP`, JSON.parse(JSON.stringify(val)));
+}, { deep: true });
 </script>
 
 <style lang="less">
 @import url("../index.less");
-
-.tip {
-  color: #999;
-  font-size: var(--font-xs);
-  padding: 16px 32px;
-}
 .bg-wrap {
   display: flex;
   flex-flow: row nowrap;

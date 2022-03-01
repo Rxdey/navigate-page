@@ -40,7 +40,7 @@ const handleSubmit = () => {
     Toast.fail('裁剪图片失败');
     return;
   }
-  emit('submit', cropper.getCroppedCanvas().toDataURL('image/jpeg'));
+  emit('submit', cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.8));
 };
 
 </script>
@@ -49,10 +49,13 @@ const handleSubmit = () => {
 .cropper {
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   background: #000;
+  display: flex;
+  flex-flow: column;
   &-body {
-    height: 100%;
+    flex: 1;
+    min-height: 100px;
     img {
       display: block;
       max-width: 100%;

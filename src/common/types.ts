@@ -9,6 +9,7 @@ export interface PropType<T> {
  */
 export interface ShortcutData {
   logoBg?: string;
+  logoUrl?: string;
   logoBgColor?: string;
   logoColor: string;
   logoLabel?: string;

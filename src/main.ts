@@ -4,6 +4,7 @@ import localforage from 'localforage';
 import 'lib-flexible';
 // import '@vant/touch-emulator';
 import RxIcon from '@/components/RxIcon/RxIcon.vue';
+import MySlider from '@/components/MySlider/MySlider.vue';
 import { DATABASE_NAME } from '@/conf/conf';
 import store, { key } from './store';
 import App from './App.vue';
@@ -19,6 +20,7 @@ localforage.config({
 
 const app = createApp(App);
 app.component('RxIcon', RxIcon);
+app.component('MySlider', MySlider);
 app.component(CellGroup.name, CellGroup);
 app.component(Cell.name, Cell);
 app.component(Icon.name, Icon);

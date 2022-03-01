@@ -1,5 +1,5 @@
 <template>
-  <div class="navigate-wrap">
+  <div class="navigate-wrap" v-if="renderPage">
     <SearchBarVue />
     <ShortcutVue />
     <SettingVue />
@@ -14,16 +14,24 @@ import SettingVue from '@/container/Setting/Setting.vue';
 import SearchBarVue from '@/container/SearchBar/SearchBar.vue';
 import BackgroundVue from '@/container/Background/Background.vue';
 import ShortcutVue from '@/container/Shortcut/Shortcut.vue';
-import { UPDATE_LAYOUT_SETTING, UPDATE_SHORTCUT_LIST } from '@/store/conf';
+import { UPDATE_GLOBAL_SETTING, UPDATE_LAYOUT_SETTING, UPDATE_SHORTCUT_LIST } from '@/store/conf';
 import { useStore } from '@/store';
 
 const store = useStore();
+const renderPage = ref(false);
 
 const initStore = async () => {
-  const layoutSetting = await localforage.getItem(UPDATE_LAYOUT_SETTING);
-  if (layoutSetting) store.commit(UPDATE_LAYOUT_SETTING, layoutSetting);
-  const shortcutList = await localforage.getItem(UPDATE_SHORTCUT_LIST);
-  if (shortcutList) store.commit(UPDATE_SHORTCUT_LIST, shortcutList);
+  try {
+    const globalSetting = await localforage.getItem(UPDATE_GLOBAL_SETTING);
+    if (globalSetting) store.commit(UPDATE_GLOBAL_SETTING, globalSetting);
+    const layoutSetting = await localforage.getItem(UPDATE_LAYOUT_SETTING);
+    if (layoutSetting) store.commit(UPDATE_LAYOUT_SETTING, layoutSetting);
+    const shortcutList = await localforage.getItem(UPDATE_SHORTCUT_LIST);
+    if (shortcutList) store.commit(UPDATE_SHORTCUT_LIST, shortcutList);
+  } catch (error) {
+    console.log('error');
+  }
+  renderPage.value = true;
 };
 onMounted(() => {
   initStore();

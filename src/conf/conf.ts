@@ -11,14 +11,14 @@ export const DEFAULT_LAYOUT_SETTING: LayoutSettingData = {
   filter: 0,
   mask: 30,
 };
-export const GLOBAL_SETTING: GlobalSettingData = {
+export const DEFAULT_GLOBAL_SETTING: GlobalSettingData = {
   grid: {
     row: 5,
     column: 3,
     scale: 1,
   },
   searchBar: {
-    radius: 50,
+    radius: 100,
     positionY: 20,
     width: 80,
   },

@@ -43,8 +43,8 @@ const onChange = (e: Event) => {
   const { files } = e.target as HTMLInputElement;
   if (!files) return;
   const { size } = files[0];
-  if (size > (1024 * props.limit)) {
-    Toast(`因本地存储问题，请上传小于${kbToSize.value}的图标`);
+  if (size > (1024 * props.limit) && props.limit !== 0) {
+    Toast(`请上传小于${kbToSize.value}的图标`);
     return;
   }
   if (props.blob) {

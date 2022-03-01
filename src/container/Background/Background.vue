@@ -7,9 +7,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch, ComputedRef } from 'vue';
 import { useStore } from '@/store';
 import { dataURLtoBlob } from '@/common/util';
+import { LayoutSettingData } from '@/common/types';
 
 const store = useStore();
 

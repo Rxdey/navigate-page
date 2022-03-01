@@ -76,7 +76,7 @@
     <div class="button-wrap">
       <van-button block round type="danger" @click="handleSubmit">保存</van-button>
     </div>
-    <Upload ref="uploadRef" @upload="onUpload" :blob="isCut" :limit="3072"></Upload>
+    <Upload ref="uploadRef" @upload="onUpload" :blob="isCut" :limit="0"></Upload>
   </section>
   <!-- 裁剪 -->
   <van-popup v-model:show="showPopup" position="bottom" :style="{ height: '100%' }" teleport="body">

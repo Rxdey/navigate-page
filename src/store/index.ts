@@ -55,13 +55,12 @@ const store = createStore<StateData>({
           prev[`--${keyList[0]}`] = keyList[1];
           return prev;
         }, {});
-        console.log(obj);
         style = {
           ...style,
           ...obj
         }
       }
- 
+
       if (filter) style.transform = 'scale(1.04)';
 
       return style;

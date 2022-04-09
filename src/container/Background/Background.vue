@@ -1,7 +1,7 @@
 <template>
   <teleport to="body">
     <div class="background" :style="layoutSetting">
-      <div class="background-image" :style="{backgroundImage: `url(${bg})`}"></div>
+      <div class="background-image" :style="{ backgroundImage: `url(${bg})` }"></div>
       <div class="background-mask"></div>
     </div>
   </teleport>

@@ -8,12 +8,7 @@
             <van-switch v-model="checked" size="24" />
           </template>
         </van-cell>
-        <van-field
-          label="图片地址"
-          v-model="backgroundImage"
-          placeholder="请输入图片地址"
-          v-if="checked"
-        ></van-field>
+        <van-field label="图片地址" v-model="backgroundImage" placeholder="请输入图片地址" v-if="checked"></van-field>
         <van-cell center title="开启裁剪模式" label="仅上传本地图片生效" v-show="!checked">
           <template #right-icon>
             <van-switch v-model="isCut" size="24" />
@@ -145,6 +140,7 @@ onMounted(() => {
   // 状态会同步更改掉，不推荐，但是还行，当预览用
   layoutSetting.value = store.getters.getLayoutSetting;
   tempColor.value = layoutSetting.value.color || '';
+  backgroundImage.value = store.state.backgroundImage;
   checked.value = /^(http|https)/.test(backgroundImage.value);
 });
 
@@ -163,6 +159,7 @@ const handleUplpad = () => {
 const onUpload = (blob: string) => {
   if (!blob) return;
   if (!isCut.value) {
+    store.commit('UPDATE_BACKGROUND_IMAGE', blob);
     backgroundImage.value = blob;
     return;
   }
@@ -171,8 +168,9 @@ const onUpload = (blob: string) => {
 };
 const onImageSubmit = (data: string) => {
   backgroundImage.value = data;
+  store.commit('UPDATE_BACKGROUND_IMAGE', data);
   showPopup.value = false;
-  console.log(currentBg.value);
+  // console.log(currentBg.value);
 };
 // 取色器格式不对，处理一下
 watch(tempColor, (val) => {

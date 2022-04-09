@@ -14,7 +14,7 @@ import SettingVue from '@/container/Setting/Setting.vue';
 import SearchBarVue from '@/container/SearchBar/SearchBar.vue';
 import BackgroundVue from '@/container/Background/Background.vue';
 import ShortcutVue from '@/container/Shortcut/Shortcut.vue';
-import { UPDATE_LAYOUT_SETTING, UPDATE_SHORTCUT_LIST } from '@/store/conf';
+import { UPDATE_LAYOUT_SETTING, UPDATE_SHORTCUT_LIST, UPDATE_BACKGROUND_IMAGE } from '@/store/conf';
 import { useStore } from '@/store';
 
 const store = useStore();
@@ -24,6 +24,8 @@ const initStore = async () => {
   if (layoutSetting) store.commit(UPDATE_LAYOUT_SETTING, layoutSetting);
   const shortcutList = await localforage.getItem(UPDATE_SHORTCUT_LIST);
   if (shortcutList) store.commit(UPDATE_SHORTCUT_LIST, shortcutList);
+  const backgroundImage = await localforage.getItem(UPDATE_BACKGROUND_IMAGE);
+  if (backgroundImage) store.commit(UPDATE_BACKGROUND_IMAGE, backgroundImage);
 };
 onMounted(() => {
   initStore();

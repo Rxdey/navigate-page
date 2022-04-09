@@ -1,11 +1,11 @@
 import { Store } from 'vuex';
 import localforage from 'localforage';
 import { StateData } from './types';
-import { UPDATE_LAYOUT_SETTING, UPDATE_SHORTCUT_LIST } from './conf';
+import { UPDATE_LAYOUT_SETTING, UPDATE_SHORTCUT_LIST, UPDATE_BACKGROUND_IMAGE } from './conf';
 
 export const keepStateDataPlugin = (store: Store<StateData>) => {
   store.subscribe(({ type, payload }, state) => {
-    const typeList = [UPDATE_LAYOUT_SETTING, UPDATE_SHORTCUT_LIST];
+    const typeList = [UPDATE_LAYOUT_SETTING, UPDATE_SHORTCUT_LIST, UPDATE_BACKGROUND_IMAGE];
     if (typeList.includes(type)) {
       localforage.setItem(type, payload).catch((error) => {
         console.error(`${type}更新失败.`);

@@ -24,4 +24,4 @@ app.component(Cell.name, Cell);
 app.component(Icon.name, Icon);
 app.component(Button.name, Button);
 app.use(store, key);
-app.mount('#app');
+app.mount('body');

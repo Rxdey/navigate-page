@@ -3,5 +3,6 @@ import { ShortcutData, LayoutSettingData, GlobalSettingData } from '@/common/typ
 export interface StateData {
   shortcutList: ShortcutData[],
   layoutSetting: LayoutSettingData,
-  globalSetting: GlobalSettingData
+  globalSetting: GlobalSettingData,
+  backgroundImage: string
 }

@@ -53,6 +53,7 @@ const globalSetting: Ref<GlobalSettingData> = ref(DEFAULT_GLOBAL_SETTING);
 
 const handleSubmit = () => {
   store.commit(UPDATE_GLOBAL_SETTING, JSON.parse(JSON.stringify(globalSetting.value)));
+  Toast.success('保存成功');
 };
 
 onMounted(() => {

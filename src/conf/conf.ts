@@ -1,4 +1,4 @@
-import { LayoutSettingData, GlobalSettingData } from '@/common/types';
+import { LayoutSettingData, GlobalSettingData, SearchEngine } from '@/common/types';
 
 /**
  * 初始化数据配置
@@ -24,8 +24,18 @@ export const DEFAULT_GLOBAL_SETTING: GlobalSettingData = {
   view: {
     scale: 1,
   },
+  // 默认搜索引擎,
+  defaultSearchEngine: 0,
 };
 
+export const DEFAULT_SEARCH_ENGINE_LIST: SearchEngine[] = [
+  {
+    label: '百度',
+    logo: 'https://www.baidu.com/favicon.ico',
+    url: 'https://www.baidu.com/s?wd=',
+    readonly: true,
+  },
+];
 /**
  * indexedDB配置
  */

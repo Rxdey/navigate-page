@@ -1,5 +1,5 @@
 export interface PropType<T> {
-  [key: number|string]: T
+  [key: number | string]: T
 }
 /**
  * 快捷导航
@@ -49,5 +49,18 @@ export interface GlobalSettingData {
   };
   view: {
     scale: number;
-  }
+  },
+  defaultSearchEngine?: number;
+}
+/**
+ *
+ * 搜索引擎配置
+ * @export
+ * @interface SearchEngine
+ */
+export interface SearchEngine {
+  label: string;
+  logo?: string;
+  url: string;
+  readonly?: boolean;
 }

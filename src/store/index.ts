@@ -1,7 +1,7 @@
 import { InjectionKey, readonly } from 'vue';
 import { createStore, useStore as vuexStore, Store } from 'vuex';
 import { ShortcutData, LayoutSettingData, GlobalSettingData, PropType } from '@/common/types';
-import { DEFAULT_LAYOUT_SETTING, DEFAULT_GLOBAL_SETTING } from '@/conf/conf';
+import { DEFAULT_LAYOUT_SETTING, DEFAULT_GLOBAL_SETTING, DEFAULT_SEARCH_ENGINE_LIST } from '@/conf/conf';
 
 import { dataURLtoBlob } from '@/common/util';
 import { StateData } from './types';
@@ -14,6 +14,7 @@ const store = createStore<StateData>({
     layoutSetting: DEFAULT_LAYOUT_SETTING, // 默认值
     globalSetting: DEFAULT_GLOBAL_SETTING,
     backgroundImage: '', // 图片单独存放防止重新渲染
+    searchEngineLsit: DEFAULT_SEARCH_ENGINE_LIST,
   },
   mutations: {
     // XXXX_TEMP 临时存储作为预览，避免频繁访问本地存储
@@ -40,11 +41,20 @@ const store = createStore<StateData>({
       state.backgroundImage = data;
     },
   },
+  actions: {
+    // 设置默认搜索引擎
+    SAVE_DEFAULT_SEARCH_ENGINE({ commit, state }, data = 0) {
+      const { globalSetting } = state;
+      const { defaultSearchEngine } = globalSetting;
+      if (data === defaultSearchEngine) return;
+      globalSetting.defaultSearchEngine = data;
+      commit('UPDATE_GLOBAL_SETTING_TEMP', globalSetting);
+    },
+  },
   getters: {
     getBgImage(state) {
       const { backgroundImage } = state;
       if (!backgroundImage) return '';
-      console.log(/^(http|https)/.test(backgroundImage));
       return /^(http|https)/.test(backgroundImage) ? backgroundImage : window.URL.createObjectURL(dataURLtoBlob(backgroundImage) || new Blob());
     },
     getLayoutStyle(state) {
@@ -92,6 +102,12 @@ const store = createStore<StateData>({
           backgroundImage: tempBg || item.logoUrl || '',
         };
       });
+    },
+    getSearchEngineList(state) {
+      return state.searchEngineLsit;
+    },
+    getDefaultSearchEngine(state) {
+      return state.searchEngineLsit[state.globalSetting.defaultSearchEngine || 0];
     },
   },
   plugins: [keepStateDataPlugin],

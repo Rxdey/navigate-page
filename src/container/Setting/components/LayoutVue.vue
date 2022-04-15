@@ -8,12 +8,7 @@
             <van-switch v-model="checked" size="24" />
           </template>
         </van-cell>
-        <van-field
-          label="图片地址"
-          v-model="layoutSetting.networkUrl"
-          placeholder="请输入图片地址"
-          v-if="checked"
-        ></van-field>
+        <van-field label="图片地址" v-model="backgroundImage" placeholder="请输入图片地址" v-if="checked"></van-field>
         <van-cell center title="开启裁剪模式" label="仅上传本地图片生效" v-show="!checked">
           <template #right-icon>
             <van-switch v-model="isCut" size="24" />
@@ -101,7 +96,7 @@ import { dataURLtoBlob } from '@/common/util';
 import { Chrome } from '@ckpack/vue-color';
 import { useStore } from '@/store';
 import { DEFAULT_LAYOUT_SETTING } from '@/conf/conf';
-import { UPDATE_LAYOUT_SETTING } from '@/store/conf';
+import { UPDATE_LAYOUT_SETTING, UPDATE_BACKGROUND_IMAGE } from '@/store/conf';
 
 type TempColor = {
   rgba?: { r: number, g: number, b: number, a: number }
@@ -115,6 +110,7 @@ const displayModeList = [
 
 const store = useStore();
 const layoutSetting: Ref<LayoutSettingData> = ref(DEFAULT_LAYOUT_SETTING);
+const backgroundImage = ref('');
 const uploadRef = ref<InstanceType<typeof Upload> & UploadExpose>();
 const showPopup = ref(false);
 const tempImage = ref('');
@@ -123,7 +119,7 @@ const isCut = ref(true);
 const tempColor: Ref<string | TempColor> = ref({});
 const showFontColorPicker = ref(false);
 
-const currentBg = computed(() => (checked.value ? layoutSetting.value.networkUrl : window.URL.createObjectURL(dataURLtoBlob(layoutSetting.value.bg) || new Blob())));
+const currentBg = computed(() => (checked.value ? backgroundImage.value : window.URL.createObjectURL(dataURLtoBlob(backgroundImage.value) || new Blob())));
 
 onMounted(() => {
   document.body.addEventListener('click', () => {
@@ -131,20 +127,15 @@ onMounted(() => {
   });
   layoutSetting.value = JSON.parse(JSON.stringify(store.state.layoutSetting));
   tempColor.value = layoutSetting.value.color || '';
-  if (layoutSetting.value.networkUrl) {
-    checked.value = true;
-  }
+  backgroundImage.value = store.state.backgroundImage;
+  checked.value = /^(http|https)/.test(backgroundImage.value);
 });
 
 // 提交
 const handleSubmit = () => {
   const saveData: LayoutSettingData = JSON.parse(JSON.stringify(layoutSetting.value));
-  if (checked.value) {
-    saveData.bg = '';
-  } else {
-    saveData.networkUrl = '';
-  }
   store.commit(UPDATE_LAYOUT_SETTING, saveData);
+  store.commit(UPDATE_BACKGROUND_IMAGE, backgroundImage.value);
   Toast.success('保存成功');
 };
 // 上传图片
@@ -155,16 +146,18 @@ const handleUplpad = () => {
 const onUpload = (blob: string) => {
   if (!blob) return;
   if (!isCut.value) {
-    layoutSetting.value.bg = blob;
+    store.commit(UPDATE_BACKGROUND_IMAGE, blob);
+    backgroundImage.value = blob;
     return;
   }
   tempImage.value = blob;
   showPopup.value = true;
 };
 const onImageSubmit = (data: string) => {
-  layoutSetting.value.bg = data;
+  backgroundImage.value = data;
+  store.commit(UPDATE_BACKGROUND_IMAGE, data);
   showPopup.value = false;
-  console.log(currentBg.value);
+  // console.log(currentBg.value);
 };
 // 取色器格式不对，处理一下
 watch(tempColor, (val) => {

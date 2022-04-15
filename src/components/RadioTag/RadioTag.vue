@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, PropType, defineProps, withDefaults, defineEmits } from 'vue';
+import { ref, onMounted, computed, PropType, withDefaults } from 'vue';
 
 type Props = {
   options?: Array<{ label: string, value: string }>,

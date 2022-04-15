@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, withDefaults, watch, defineEmits, useAttrs, onBeforeMount } from 'vue';
+import { ref, withDefaults, watch, useAttrs, onBeforeMount } from 'vue';
 import { Slider as VanSlider } from 'vant';
 
 type Props = {

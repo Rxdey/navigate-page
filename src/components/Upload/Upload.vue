@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { Toast } from 'vant';
-import { ref, onMounted, computed, Ref, defineExpose, defineEmits, defineProps } from 'vue';
+import { ref, onMounted, computed, Ref } from 'vue';
 
 export interface UploadExpose {
   chooseImage: () => void;

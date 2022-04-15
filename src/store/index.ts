@@ -13,6 +13,7 @@ const store = createStore<StateData>({
     shortcutList: [],
     layoutSetting: DEFAULT_LAYOUT_SETTING, // 默认值
     globalSetting: DEFAULT_GLOBAL_SETTING,
+    backgroundImage: '', // 图片单独存放防止重新渲染
   },
   mutations: {
     // XXXX_TEMP 临时存储作为预览，避免频繁访问本地存储
@@ -35,27 +36,42 @@ const store = createStore<StateData>({
     UPDATE_GLOBAL_SETTING(state, data: GlobalSettingData) {
       state.globalSetting = data;
     },
+    UPDATE_BACKGROUND_IMAGE(state, data: string) {
+      state.backgroundImage = data;
+    },
   },
   getters: {
+    getBgImage(state) {
+      const { backgroundImage } = state;
+      if (!backgroundImage) return '';
+      console.log(/^(http|https)/.test(backgroundImage));
+      return /^(http|https)/.test(backgroundImage) ? backgroundImage : window.URL.createObjectURL(dataURLtoBlob(backgroundImage) || new Blob());
+    },
     getLayoutStyle(state) {
-      const { color, displayMode, filter, mask, bg, networkUrl } = state.layoutSetting;
+      const { color, displayMode, filter, mask } = state.layoutSetting;
       let style: PropType<string> = {};
       style['--background-color'] = color || '';
-      // 因为预览属性变更会多次触发渲染，这里就直接用base64显示了
-      style['--background-bg'] = `url('${networkUrl || bg}')`;
+      // style['--background-bg'] = `url('${networkUrl || window.URL.createObjectURL(dataURLtoBlob(bg) || new Blob())}')`;
       style['--background-filter'] = `${(filter || 0) * 0.2}px`;
       style['--background-mask'] = `${(mask || 0) * 0.01}`;
-      if (filter) style.transform = 'scale(1.04)';
+      style['--background-repeat'] = 'no-repeat';
+      style['--background-size'] = 'cover';
       if (displayMode) {
         const arr = displayMode.split(';');
         const obj = arr.reduce((prev: PropType<string>, next: string) => {
           const keyList = next.split(':');
           // eslint-disable-next-line prefer-destructuring
-          prev[`${keyList[0]}`] = keyList[1];
+          prev[`--${keyList[0]}`] = keyList[1];
           return prev;
         }, {});
-        style = { ...style, ...obj };
+        style = {
+          ...style,
+          ...obj,
+        };
       }
+
+      if (filter) style.transform = 'scale(1.04)';
+
       return style;
     },
     getSearchStyle(state) {

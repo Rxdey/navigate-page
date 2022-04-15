@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { Cell, CellGroup, Icon, Button } from 'vant';
 import localforage from 'localforage';
+import '@vant/touch-emulator';
 import 'lib-flexible';
 // import '@vant/touch-emulator';
 import RxIcon from '@/components/RxIcon/RxIcon.vue';
@@ -26,4 +27,4 @@ app.component(Cell.name, Cell);
 app.component(Icon.name, Icon);
 app.component(Button.name, Button);
 app.use(store, key);
-app.mount('#app');
+app.mount('body');

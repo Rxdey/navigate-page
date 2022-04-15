@@ -5,7 +5,6 @@ import { LayoutSettingData, GlobalSettingData } from '@/common/types';
  */
 export const DEFAULT_LAYOUT_SETTING: LayoutSettingData = {
   displayMode: 'background-size:cover',
-  networkUrl: '',
   bg: '',
   color: '',
   filter: 0,

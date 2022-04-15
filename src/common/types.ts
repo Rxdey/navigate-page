@@ -26,7 +26,6 @@ export interface ShortcutData {
 export interface LayoutSettingData {
   bg?: string,
   color?: string,
-  networkUrl?: string,
   displayMode?: string,
   filter?: number;
   mask?: number;

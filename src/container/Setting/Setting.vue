@@ -2,15 +2,7 @@
   <section class="setting-button">
     <van-icon name="bar-chart-o" size=".7rem" color="#fff" @click="showPopup" />
   </section>
-  <van-popup
-    v-model:show="show"
-    :position="popupSetting.position"
-    :round="popupSetting.round"
-    closeable
-    teleport="body"
-    class="current-popup"
-    :overlay-style="{backgroundColor: 'transparent'}"
-  >
+  <van-popup v-model:show="show" :position="popupSetting.position" :round="popupSetting.round" teleport="body" class="current-popup" :overlay-style="{ backgroundColor: 'transparent' }">
     <van-tabs v-model:active="active" animated color="#fc7c79" lazy-render>
       <van-tab title="添加">
         <AddPaneVue />
@@ -63,24 +55,37 @@ onMounted(() => {
   display: flex;
   flex-flow: column;
   height: 100%;
+
   .van-tabs__content {
     flex: 1;
     min-height: 100px;
+
     .van-tab__pane {
       height: 100%;
       // overflow-y: auto;
     }
   }
 }
+
 .setting-button {
   position: fixed;
   bottom: 32px;
   left: 32px;
 }
+
 .current-popup {
   height: 70%;
   overflow: hidden;
+  background-color: rgba(255, 255, 255, .9);
+  --van-cell-group-title-color: #ee0a24;
+  .van-tabs__nav {
+    background-color: rgba(255, 255, 255, .7);
+  }
+  .van-cell,.van-cell-group {
+    background-color: transparent;
+  }
 }
+
 @media screen and (min-width: 680px) {
   .current-popup {
     height: 100%;

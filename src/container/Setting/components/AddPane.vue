@@ -222,7 +222,7 @@ const handleSubmit = () => {
   } else {
     shortcutList = shortcutList.map((item) => ({ ...item, logoUrl: '' }));
   }
-  store.commit(UPDATE_SHORTCUT_LIST, JSON.parse(JSON.stringify(shortcutList)));
+  store.commit(UPDATE_SHORTCUT_LIST, shortcutList);
   Toast.success('添加成功');
   tempIco.value = '';
   clearIcon();
@@ -365,6 +365,7 @@ watch(tempFontColor, (val) => {
         font-size: var(--font-s);
         border: none;
         outline: none;
+        background-color: transparent;
       }
     }
   }

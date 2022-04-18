@@ -10,16 +10,21 @@ export const DEFAULT_LAYOUT_SETTING: LayoutSettingData = {
   filter: 0,
   mask: 30,
 };
+
 export const DEFAULT_GLOBAL_SETTING: GlobalSettingData = {
   grid: {
-    row: 5,
-    column: 3,
+    row: 2,
+    column: 4,
     scale: 1,
+    iconColor: '#fff',
+    iconSize: 110,
+    iconRadius: 60,
   },
   searchBar: {
     radius: 100,
     positionY: 20,
     width: 80,
+    marginBottom: 50,
   },
   view: {
     scale: 1,
@@ -31,11 +36,24 @@ export const DEFAULT_GLOBAL_SETTING: GlobalSettingData = {
 export const DEFAULT_SEARCH_ENGINE_LIST: SearchEngine[] = [
   {
     label: '百度',
-    logo: 'https://www.baidu.com/favicon.ico',
+    logo: '/icon/engine/baidu.ico',
     url: 'https://www.baidu.com/s?wd=',
     readonly: true,
   },
+  {
+    label: '谷歌',
+    logo: '/icon/engine/google.ico',
+    url: 'https://www.google.com/search?q=',
+    readonly: true,
+  },
+  {
+    label: '必应',
+    logo: '/icon/engine/biying.ico',
+    url: 'https://cn.bing.com/search?q=',
+    readonly: true,
+  },
 ];
+export const DEFAULT_SETTING = {};
 /**
  * indexedDB配置
  */

@@ -21,7 +21,7 @@ import { useStore } from '@/store';
 
 const store = useStore();
 const renderPage = ref(false);
-const searchStyle = computed(() => store.getters.getSearchStyle);
+const searchStyle = computed(() => store.getters.getGlobalStyle);
 
 const initStore = async () => {
   try {

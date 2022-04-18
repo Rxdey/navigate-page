@@ -3,7 +3,7 @@
   max-width: var(--max-search-bar-width);
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 64px;
+  margin-bottom: var(--search-bar-margin-bottom);
   // margin-top: var(--search-margin-top);
   // position: absolute;
   // top: var(--search-margin-top);
@@ -20,8 +20,9 @@
     background-color: #fff;
     position: relative;
   }
-  // &__icon {
-  // }
+  &__icon {
+    // line-height: var(--input-height);
+  }
   &__content {
     flex: 1;
     min-width: 1px;
@@ -43,6 +44,12 @@
   }
   &__clear {
     cursor: pointer;
+  }
+  .search-engine-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    display: block;
   }
 }
 .search-drop {

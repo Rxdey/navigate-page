@@ -4,7 +4,7 @@
       <div class="slider-content">
         <van-slider v-model="currentValue" v-bind="{ ...attrs }" @update:model-value="onChange" />
       </div>
-      <div>{{ modelValue || 0 }}%</div>
+      <div class="slider-unit">{{ modelValue || 0}} {{unit}}</div>
     </div>
     <slot></slot>
   </div>
@@ -15,12 +15,14 @@ import { ref, withDefaults, watch, useAttrs, onBeforeMount } from 'vue';
 import { Slider as VanSlider } from 'vant';
 
 type Props = {
-  modelValue?: number
+  modelValue?: number,
+  unit?: string,
 }
 const attrs = useAttrs();
 const emit = defineEmits(['update:modelValue']);
 const props = withDefaults(defineProps<Props>(), {
   modelValue: 0,
+  unit: '%',
 });
 const currentValue = ref(0);
 const onChange = (val: number) => {
@@ -57,6 +59,10 @@ watch(() => props.modelValue, (val) => {
     position: absolute;
     z-index: 10;
     right: 72px;
+  }
+  .slider-unit {
+    min-width: 100px;
+    text-align: right;
   }
 }
 </style>

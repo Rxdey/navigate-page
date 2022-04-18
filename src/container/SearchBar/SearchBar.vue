@@ -1,8 +1,9 @@
 <template>
   <section class="search-bar">
     <div class="search-bar--wrap">
-      <div class="search-bar__icon">
-        <van-icon name="edit" size=".507rem" />
+      <div class="search-bar__icon" @click="showEngine = !showEngine">
+        <!-- <van-icon name="edit" size=".507rem" /> -->
+        <img class="search-engine-logo" :src="defaultSearchEngine.logo" :alt="defaultSearchEngine.label">
       </div>
       <div class="search-bar__content">
         <input type="search" v-model="searchValue" autocomplete="off" name="search" class="custom-input" placeholder="开始吧✨✨~" @blur="onBlur" @focus="onFocus" @input="onInput" @keypress.enter="handleSearch(searchValue)" />
@@ -21,14 +22,14 @@
     <div class="search-drop" v-if="showEngine">
       <div class="engine">
 
-        <div class="engine--item" v-for="(engine, i) in searchEngineList" :key="i">
+        <div class="engine--item" v-for="(engine, i) in searchEngineList" :key="i" @click="onSelectEngine(engine, i)">
           <img class="engine__logo" :src="engine.logo" alt="">
           <p class="engine__label">{{ engine.label }}</p>
         </div>
-        <div class="engine--item">
+        <!-- <div class="engine--item">
           <van-icon name="plus" size=".8rem" color="#C3C3C3" />
           <p class="engine__label">添加</p>
-        </div>
+        </div> -->
 
       </div>
     </div>
@@ -53,6 +54,12 @@ const searchEngineList: ComputedRef<SearchEngine[]> = computed(() => store.gette
 // 默认搜索引擎
 const defaultSearchEngine: ComputedRef<SearchEngine> = computed(() => store.getters.getDefaultSearchEngine);
 
+// 选择默认搜索引擎
+const onSelectEngine = (engine: SearchEngine, i = 0) => {
+  store.dispatch('SAVE_DEFAULT_SEARCH_ENGINE', i);
+  showEngine.value = false;
+};
+
 // 获取百度候选词
 const getWaitData = async () => {
   if (!searchValue.value || lastValue.value === searchValue.value) return;
@@ -61,7 +68,6 @@ const getWaitData = async () => {
   if (!res.s || !res.s.length) return;
   searchList.value = res.s;
 };
-
 const onBlur = () => {
   showClear.value = Boolean(searchValue.value);
 };

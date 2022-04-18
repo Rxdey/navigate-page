@@ -41,11 +41,15 @@ export interface GlobalSettingData {
     row: number;
     column: number;
     scale: number;
+    iconColor: string;
+    iconSize: number;
+    iconRadius: number;
   };
   searchBar: {
     radius: number;
     positionY: number;
     width: number;
+    marginBottom?: number;
   };
   view: {
     scale: number;

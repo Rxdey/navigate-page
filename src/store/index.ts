@@ -47,8 +47,12 @@ const store = createStore<StateData>({
       const { globalSetting } = state;
       const { defaultSearchEngine } = globalSetting;
       if (data === defaultSearchEngine) return;
-      globalSetting.defaultSearchEngine = data;
-      commit('UPDATE_GLOBAL_SETTING_TEMP', globalSetting);
+      // globalSetting.defaultSearchEngine = data;
+      const tempData = {
+        ...globalSetting,
+        defaultSearchEngine: data,
+      };
+      commit('UPDATE_GLOBAL_SETTING', tempData);
     },
   },
   getters: {
@@ -84,13 +88,24 @@ const store = createStore<StateData>({
 
       return style;
     },
-    getSearchStyle(state) {
-      const { radius, positionY, width } = state.globalSetting.searchBar;
-      const searchStyle: PropType<string> = {};
-      searchStyle['--search-margin-top'] = `${positionY}%`;
-      searchStyle['--search-radius'] = `${radius / 166.6}rem`;
-      searchStyle['--search-width'] = `${width}%`;
-      return searchStyle;
+    getGlobalStyle(state) {
+      // const { radius, positionY, width, marginBottom } = state.globalSetting.searchBar;
+      const { searchBar, grid } = state.globalSetting;
+      const { radius, positionY, width, marginBottom } = searchBar;
+      const { row, column, scale, iconColor, iconRadius, iconSize } = grid;
+      const globalStyle: PropType<string> = {};
+      // 搜索框
+      globalStyle['--search-margin-top'] = `${positionY}%`;
+      globalStyle['--search-radius'] = `${radius / 166.6}rem`;
+      globalStyle['--search-width'] = `${width}%`;
+      globalStyle['--search-bar-margin-bottom'] = `${marginBottom}px`;
+      // 快捷导航
+      globalStyle['--icon-label-color'] = iconColor;
+      globalStyle['--icon-row'] = `${row}`;
+      globalStyle['--icon-colum'] = `${column}`;
+      // globalStyle['--icon-radius'] = `${iconRadius}rem`;
+      // globalStyle['--icon-size'] = `${iconSize}rem`;
+      return globalStyle;
     },
     getShortcutList(state) {
       const { shortcutList } = state;

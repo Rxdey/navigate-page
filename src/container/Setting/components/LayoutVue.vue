@@ -133,7 +133,7 @@ onMounted(() => {
 
 // 提交
 const handleSubmit = () => {
-  const saveData: LayoutSettingData = JSON.parse(JSON.stringify(layoutSetting.value));
+  const saveData: LayoutSettingData = layoutSetting.value;
   store.commit(UPDATE_LAYOUT_SETTING, saveData);
   store.commit(UPDATE_BACKGROUND_IMAGE, backgroundImage.value);
   Toast.success('保存成功');

@@ -41,9 +41,9 @@ export default defineConfig({
         {
           libraryName: 'vant',
           esModule: true,
-          resolveStyle: (name) => `vant/es/${name}/style`
-        }
-      ]
+          resolveStyle: (name) => `vant/es/${name}/style`,
+        },
+      ],
     }),
   ],
   base: './',

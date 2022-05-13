@@ -419,7 +419,7 @@ watch(tempFontColor, (val) => {
       border-radius: 8px;
       overflow: hidden;
       &.picker .color-inner {
-        background: url(image/color.png) no-repeat center;
+        background: url(/image/color.png) no-repeat center;
         background-size: contain;
       }
     }

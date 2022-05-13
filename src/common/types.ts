@@ -1,5 +1,5 @@
 export interface PropType<T> {
-  [key: number | string]: T
+  [key: string]: T
 }
 /**
  * 快捷导航

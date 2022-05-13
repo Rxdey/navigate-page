@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, defineProps, defineEmits, Ref } from 'vue';
+import { ref, onMounted, computed, Ref } from 'vue';
 import { NavBar, Toast } from 'vant';
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.min.css';

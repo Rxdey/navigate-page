@@ -23,4 +23,10 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 1,
     'max-len': 0
   },
+  globals: {
+    defineProps: "readonly",
+    defineEmits: "readonly",
+    defineExpose: "readonly",
+    withDefaults: "readonly",
+  },
 };

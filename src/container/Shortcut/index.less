@@ -1,15 +1,23 @@
 .shortcut {
-  --icon-label-color: #fff;
-  --icon-row: 4;
-  --icon-colum: 4;
+  // --icon-label-color: #fff;
+  // --icon-row: 2;
+  // --icon-colum: 4;
+  --row-gap: 32px;
+  --icon-size: 110px;
+  --icon-radius: 60px;
+  --icon-font-size: 26px;
+  // --column-gap: 16px;
   position: relative;
   padding: 16px;
   width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
   &--list {
       display: grid;
       grid-template-columns: repeat(var(--icon-colum), calc(100% / var(--icon-colum)));
-      row-gap: 32px;
-    //   column-gap: 32px;
+      row-gap: var(--row-gap);
+      // column-gap: var(--column-gap);
+      padding-bottom: 90px;
   }
   &--item {
       margin: 0 auto;
@@ -35,6 +43,6 @@
   &__label {
       color: var(--icon-label-color);
       text-align: center;
-      font-size: 24px;
+      font-size: var(--icon-font-size);
   }
 }

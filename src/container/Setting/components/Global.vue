@@ -32,6 +32,17 @@
           button-size="0.4rem"
         />
       </van-cell-group>
+      <van-cell-group title="搜索框下边距">
+        <my-slider
+          v-model="globalSetting.searchBar.marginBottom"
+          :step="1"
+          :max="200"
+          :min="0"
+          unit="px"
+          active-color="#333"
+          button-size="0.4rem"
+        />
+      </van-cell-group>
     </div>
     <div class="button-wrap">
       <van-button block round type="danger" @click="handleSubmit">保存</van-button>
@@ -52,7 +63,8 @@ const globalData = computed(() => store.state.globalSetting);
 const globalSetting: Ref<GlobalSettingData> = ref(DEFAULT_GLOBAL_SETTING);
 
 const handleSubmit = () => {
-  store.commit(UPDATE_GLOBAL_SETTING, JSON.parse(JSON.stringify(globalSetting.value)));
+  store.commit(UPDATE_GLOBAL_SETTING, globalSetting.value);
+  Toast.success('保存成功');
 };
 
 onMounted(() => {

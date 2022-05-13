@@ -1,7 +1,15 @@
 <template>
-  <section class="layout">
+  <!-- <section class="layout"> -->
     <div class="layout-wrap">
-      <van-cell-group title="自定义导航">
+      <van-cell-group>
+        <template #title>
+          <div class="custom-title">
+            <div class="title-content">自定义导航</div>
+            <div class="edit-button" @click="emit('onSwitch')">
+              <van-icon name="edit" />
+            </div>
+          </div>
+        </template>
         <van-field label="网站地址" v-model="form.sitUrl" placeholder="请输入网站地址"></van-field>
         <van-field label="网站名称" v-model="form.sitName" placeholder="请输入网站名称"></van-field>
         <van-cell center title="网络图标">
@@ -107,13 +115,11 @@
         </div>
       </van-cell-group>
     </div>
-
     <div class="button-wrap">
       <van-button block round type="danger" @click="handleSubmit">添加</van-button>
     </div>
-
     <Upload ref="uploadRef" @upload="onUpload"></Upload>
-  </section>
+  <!-- </section> -->
 </template>
 
 <script setup lang="ts">
@@ -128,6 +134,7 @@ import { UPDATE_SHORTCUT_LIST } from '@/store/conf';
 type TempColor = {
   rgba?: { r: number, g: number, b: number, a: number }
 }
+const emit = defineEmits(['onSwitch']);
 const store = useStore();
 const form: Ref<ShortcutData> = ref({
   sitUrl: '',
@@ -275,7 +282,25 @@ watch(tempFontColor, (val) => {
 </script>
 
 <style lang="less">
-@import url("../index.less");
+@import url("../../index.less");
+.custom-title {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  .title-content {
+    flex: 1;
+  }
+  .edit-button {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    background: #fff;
+    text-align: center;
+    line-height: 70px;
+    font-size: 40px;
+    color: #333;
+  }
+}
 .line {
   content: "";
   position: absolute;

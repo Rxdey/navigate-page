@@ -1,3 +1,6 @@
+import { ShortcutData } from '@/common/types';
+
+const PATH = '/icon/shortcut/';
 export const shortcutMenuNavList = [
   {
     tag: 1,
@@ -17,30 +20,111 @@ export const shortcutMenuNavList = [
     icon: '',
     disabled: 0,
   },
-  {
-    tag: 4,
-    title: '图片',
-    icon: '',
-    disabled: 0,
-  },
+  // {
+  //   tag: 4,
+  //   title: '图片',
+  //   icon: '',
+  //   disabled: 0,
+  // },
   {
     tag: 5,
     title: '购物',
     icon: '',
     disabled: 0,
   },
-  {
-    tag: 6,
-    title: '游戏',
-    icon: '',
-    disabled: 0,
-  },
-  {
-    tag: 7,
-    title: '其它',
-    icon: '',
-    disabled: 0,
-  },
+  // {
+  //   tag: 6,
+  //   title: '游戏',
+  //   icon: '',
+  //   disabled: 0,
+  // },
+  // {
+  //   tag: 7,
+  //   title: '其它',
+  //   icon: '',
+  //   disabled: 0,
+  // },
 ];
 
-export const shortcutMenuList = [];
+export const shortcutMenuList: ShortcutData[] = [
+  {
+    sitUrl: 'http://www.bilibili.com/',
+    sitName: '哔哩哔哩弹幕视频网',
+    logoColor: 'rgba(255,255,255, 1)',
+    logoLabelSize: 37,
+    logoUrl: `${PATH}bilibili.webp`,
+    tag: [1, 3],
+  },
+  {
+    sitUrl: 'https://www.douyu.com/',
+    sitName: '斗鱼',
+    logoColor: 'rgba(255,255,255, 1)',
+    logoLabelSize: 37,
+    logoUrl: `${PATH}douyu.webp`,
+    tag: [3],
+  },
+  {
+    sitUrl: 'https://www.acfun.cn/',
+    sitName: 'AC FUN',
+    logoColor: 'rgba(255,255,255, 1)',
+    logoLabelSize: 37,
+    logoUrl: `${PATH}acfun.webp`,
+    tag: [1, 3],
+  },
+  {
+    sitUrl: 'https://github.com/',
+    sitName: 'GitHub',
+    logoColor: 'rgba(255,255,255, 1)',
+    logoLabelSize: 37,
+    logoUrl: `${PATH}github.webp`,
+    tag: [1, 2],
+  },
+  {
+    sitUrl: 'https://www.huya.com/',
+    sitName: '虎牙直播',
+    logoColor: 'rgba(255,255,255, 1)',
+    logoLabelSize: 37,
+    logoUrl: `${PATH}huya.webp`,
+    tag: [3],
+  },
+  {
+    sitUrl: 'https://www.jd.com/',
+    sitName: '京东',
+    logoColor: 'rgba(255,255,255, 1)',
+    logoLabelSize: 37,
+    logoUrl: `${PATH}jd.webp`,
+    tag: [5],
+  },
+  {
+    sitUrl: 'https://www.zhihu.com/hot',
+    sitName: '知乎',
+    logoColor: 'rgba(255,255,255, 1)',
+    logoLabelSize: 37,
+    logoUrl: `${PATH}zhihu.webp`,
+    tag: [1, 3],
+  },
+  {
+    sitUrl: 'https://bbs.nga.cn/',
+    sitName: 'NGA',
+    logoColor: 'rgba(255,255,255, 1)',
+    logoLabelSize: 37,
+    logoUrl: `${PATH}nga.webp`,
+    tag: [3],
+  },
+  {
+    sitUrl: 'https://weibo.com/',
+    sitName: '新浪微博',
+    logoColor: 'rgba(255,255,255, 1)',
+    logoLabelSize: 37,
+    logoUrl: `${PATH}weibo.webp`,
+    tag: [1, 3],
+  },
+  {
+    sitUrl: 'https://www.taobao.com/',
+    sitName: '淘宝',
+    logoColor: 'rgba(255,255,255, 1)',
+    logoLabelSize: 37,
+    logoUrl: `${PATH}tb.webp`,
+    tag: [5],
+  },
+];

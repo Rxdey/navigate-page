@@ -13,8 +13,8 @@
       <van-tab title="全局">
         <GlobalVue />
       </van-tab>
-      <van-tab title="设置">
-      </van-tab>
+      <!-- <van-tab title="设置">
+      </van-tab> -->
     </van-tabs>
   </van-popup>
 </template>
@@ -69,8 +69,8 @@ onMounted(() => {
 
 .setting-button {
   position: fixed;
-  bottom: 32px;
-  left: 32px;
+  top: 32px;
+  right: 32px;
 }
 
 .current-popup {
@@ -78,7 +78,7 @@ onMounted(() => {
   overflow: hidden;
   background-color: rgba(255, 255, 255, .7);
   --van-cell-group-title-color: #ee0a24;
-  .van-tabs__nav {
+  .van-tabs__nav, .van-collapse-item__content {
     background-color: rgba(255, 255, 255, .5);
   }
   .van-cell,.van-cell-group {

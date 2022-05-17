@@ -17,8 +17,9 @@ export const DEFAULT_GLOBAL_SETTING: GlobalSettingData = {
     column: 4,
     scale: 1,
     iconColor: '#fff',
-    iconSize: 110,
-    iconRadius: 60,
+    iconSize: 100, // 100 = 110
+    iconRadius: 100,
+    iconFontSize: 100, // 100 = 24
   },
   searchBar: {
     radius: 100,

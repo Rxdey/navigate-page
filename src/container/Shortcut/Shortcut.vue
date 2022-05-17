@@ -3,11 +3,11 @@
     <swipe class="my-swipe" indicator-color="white" :loop="false">
       <swipe-item v-for="(shorts, index) in shortcutList" :key="index">
         <div class="shortcut--list">
-          <div class="shortcut--item" v-for="(shortcut, i) in shorts" :key="i" @click="jump(shortcut)">
+          <div class="shortcut--item" v-for="(shortcut, i) in shorts" :key="i" @click="jump(shortcut)" v-longpress @longpress="onLongTap(shortcut, i)" @contextmenu.prevent>
             <div class="shortcut__icon" :style="{ backgroundImage: `url(${shortcut.backgroundImage})`, backgroundColor: shortcut.logoBgColor, fontSize: `${shortcut.logoLabelSize / 100}rem`, color: shortcut.logoColor }">
               <p v-if="!shortcut.backgroundImage">{{ shortcut.logoLabel }}</p>
             </div>
-            <div class="shortcut__label van-ellipsis">{{ shortcut.sitName }}</div>
+            <div class="shortcut__label van-ellipsis" v-show="iconFontSize > 90">{{ shortcut.sitName }}</div>
           </div>
         </div>
       </swipe-item>
@@ -33,12 +33,16 @@ const sliceArray = (arr = [], size = 10) => {
   return result;
 };
 const shortcutList: ComputedRef<(ShortcutData & { backgroundImage: string })[][]> = computed(() => sliceArray(store.getters.getShortcutList, pageSize));
+const iconFontSize = computed(() => store.state.globalSetting.grid.iconFontSize);
 
 const jump = (data: ShortcutData) => {
   const { sitUrl = '' } = data;
   window.location.href = sitUrl;
 };
 
+const onLongTap = (shortcut = {}, i = 0) => {
+  console.log(shortcut);
+};
 </script>
 
 <style lang="less">

@@ -54,6 +54,21 @@ const store = createStore<StateData>({
       };
       commit('UPDATE_GLOBAL_SETTING', tempData);
     },
+    // 单个添加
+    SAVE_SHORTCUT({ commit, state }, data: ShortcutData) {
+      const shortcutList = JSON.parse(JSON.stringify(state.shortcutList));
+      shortcutList.push(data);
+      commit('UPDATE_SHORTCUT_LIST', shortcutList);
+      return shortcutList;
+    },
+    // 单个删除
+    DELETE_SHORTCUT_BY_INDEX({ commit, state }, index = -1) {
+      if (index < 0) return false;
+      const shortcutList = JSON.parse(JSON.stringify(state.shortcutList));
+      shortcutList.splice(index, 1);
+      commit('UPDATE_SHORTCUT_LIST', shortcutList);
+      return shortcutList;
+    },
   },
   getters: {
     getBgImage(state) {
@@ -83,16 +98,14 @@ const store = createStore<StateData>({
           ...obj,
         };
       }
-
       if (filter) style.transform = 'scale(1.04)';
-
       return style;
     },
     getGlobalStyle(state) {
       // const { radius, positionY, width, marginBottom } = state.globalSetting.searchBar;
       const { searchBar, grid } = state.globalSetting;
       const { radius, positionY, width, marginBottom } = searchBar;
-      const { row, column, scale, iconColor, iconRadius, iconSize } = grid;
+      const { row, column, scale, iconColor, iconRadius, iconSize, iconFontSize } = grid;
       const globalStyle: PropType<string> = {};
       // 搜索框
       globalStyle['--search-margin-top'] = `${positionY}%`;
@@ -103,8 +116,10 @@ const store = createStore<StateData>({
       globalStyle['--icon-label-color'] = iconColor;
       globalStyle['--icon-row'] = `${row}`;
       globalStyle['--icon-colum'] = `${column}`;
-      // globalStyle['--icon-radius'] = `${iconRadius}rem`;
-      // globalStyle['--icon-size'] = `${iconSize}rem`;
+      globalStyle['--icon-radius'] = `${iconRadius / 2}%`;
+
+      globalStyle['--icon-size'] = `${iconSize * 0.01467}rem`;
+      globalStyle['--icon-font-size'] = `${(iconFontSize || 100) * 0.00347}rem`;
       return globalStyle;
     },
     getShortcutList(state) {

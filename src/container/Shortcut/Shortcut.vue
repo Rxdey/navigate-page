@@ -13,16 +13,24 @@
       </swipe-item>
     </swipe>
   </section>
+  <van-popup v-model:show="show" position="bottom" closeable round teleport="body" class="current-popup" :overlay-style="{ backgroundColor: 'transparent' }" :close-on-click-overlay="clouseOnclickOverlay" @opened="clouseOnclickOverlay = true" @close="clouseOnclickOverlay = false">
+    <AddPaneVue v-if="show" title="编辑图标" edit :data="selectShortcut" @close="show = false"></AddPaneVue>
+  </van-popup>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed, Ref, ComputedRef } from 'vue';
-import { Swipe, SwipeItem } from 'vant';
+import { Swipe, SwipeItem, Popup as VanPopup } from 'vant';
 import { useStore } from '@/store';
 import { ShortcutData } from '@/common/types';
+import AddPaneVue from '../Setting/container/ShortcutMenu/AddPane.vue';
 
-const pageSize = 6;
+const pageSize = 12;
 const store = useStore();
+const show = ref(false);
+// 动画未结束前不触发点击背景关闭
+const clouseOnclickOverlay = ref(false);
+const selectShortcut: Ref<ShortcutData & { index?: number} | null> = ref(null);
 
 const sliceArray = (arr = [], size = 10) => {
   if (!Array.isArray(arr)) return [];
@@ -40,8 +48,10 @@ const jump = (data: ShortcutData) => {
   window.location.href = sitUrl;
 };
 
-const onLongTap = (shortcut = {}, i = 0) => {
+const onLongTap = (shortcut: ShortcutData, i = 0) => {
   console.log(shortcut);
+  selectShortcut.value = { ...shortcut, index: i };
+  show.value = true;
 };
 </script>
 

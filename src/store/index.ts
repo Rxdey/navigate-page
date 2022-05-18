@@ -43,7 +43,7 @@ const store = createStore<StateData>({
   },
   actions: {
     // 设置默认搜索引擎
-    SAVE_DEFAULT_SEARCH_ENGINE({ commit, state }, data = 0) {
+    SAVE_DEFAULT_SEARCH_ENGINE({ commit, state }, data: number) {
       const { globalSetting } = state;
       const { defaultSearchEngine } = globalSetting;
       if (data === defaultSearchEngine) return;
@@ -62,10 +62,20 @@ const store = createStore<StateData>({
       return shortcutList;
     },
     // 单个删除
-    DELETE_SHORTCUT_BY_INDEX({ commit, state }, index = -1) {
-      if (index < 0) return false;
+    DELETE_SHORTCUT_BY_INDEX({ commit, state }, index:number) {
+      console.log(index);
+      if (index < 0 || typeof index !== 'number') return false;
       const shortcutList = JSON.parse(JSON.stringify(state.shortcutList));
       shortcutList.splice(index, 1);
+      commit('UPDATE_SHORTCUT_LIST', shortcutList);
+      return shortcutList;
+    },
+    // 单个修改
+    EDIT_SHORTCUT_BY_INDEX({ commit, state }, data: ShortcutData & { index?: number }) {
+      const { index = -1 } = data;
+      if (index < 0 || typeof index !== 'number') return false;
+      const shortcutList = JSON.parse(JSON.stringify(state.shortcutList));
+      shortcutList.splice(index, 1, data);
       commit('UPDATE_SHORTCUT_LIST', shortcutList);
       return shortcutList;
     },

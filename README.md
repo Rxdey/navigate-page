@@ -1,24 +1,34 @@
-# navigate-page
+# Navigate导航页面
 
-## Project setup
-```
-yarn install
-```
+移动端浏览器主页
+## 注意
+所有数据都使用indexedDb本地存储，理论上不会受限大小问题。  
+图片用base64存的，记得是存blob遇到问题所以改的，忘了。  
+清除浏览器数据时，如果勾选了网站内容选项配置就会被清空掉。  
+所以如果遇到异常情况，可以清除下缓存。  
+后续增加配置导出。  
+## 功能
+* ✅自定义快捷导航啊
+* ✅自定义背景图
+* ✅自定义搜索框样式
+* ❌行列调整(开发中⚠)
+* ❌快捷导航拖拽排序(开发中⚠)
+* ❌添加自由模块(开发中⚠)
+* ❌自定义全局样式(开发中⚠)
+* ❌导入/出配置(开发中⚠)
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
 
-### Compiles and minifies for production
-```
-yarn build
-```
+[预览地址(点我)](https://rxdey.github.io/navigate-page/dist/)
 
-### Lints and fixes files
-```
-yarn lint
-```
+### 预览效果
+**主页**
+![alt=主页](https://i.bmp.ovh/imgs/2022/05/18/47128ecf2b68de89.png)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+**添加模块默认展示内置快捷导航，点击右上角编辑按钮进入自定义功能**
+有的自定义操作只有预览效果不会立即保存，记得点一下保存或添加按钮
+
+![alt=添加](https://i.bmp.ovh/imgs/2022/05/18/4915df3eb8035548.png)
+
+**长按图标可以打开编辑窗口**
+
+![alt=编辑](https://i.bmp.ovh/imgs/2022/05/18/fae3bd9f8eb9d903.png)

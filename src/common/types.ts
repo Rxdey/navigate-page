@@ -1,5 +1,5 @@
 export interface PropType<T> {
-  [key: number | string]: T
+  [key: string]: T
 }
 /**
  * 快捷导航
@@ -16,6 +16,7 @@ export interface ShortcutData {
   sitName?: string;
   sitUrl?: string;
   logoUrl?: string;
+  tag?: Array<number|string>
 }
 /**
  * 背景设置
@@ -44,6 +45,7 @@ export interface GlobalSettingData {
     iconColor: string;
     iconSize: number;
     iconRadius: number;
+    iconFontSize: number;
   };
   searchBar: {
     radius: number;

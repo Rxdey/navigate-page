@@ -1032,6 +1032,11 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
+"@nanogiants/vue3-longpress@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@nanogiants/vue3-longpress/-/vue3-longpress-1.0.8.tgz#619dcc700554a4201620c8fb7cceed42db14f6ef"
+  integrity sha512-yrqqhrjMKJ/18A+Iq+68E1C1ZrzJeA2ya2y16Zba2kr8ktBgIeQpthIBeXl5wG5B8T5LrDnSy0DjsL1VxC0uCA==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"

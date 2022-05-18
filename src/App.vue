@@ -36,6 +36,9 @@ const initStore = async () => {
 };
 onMounted(() => {
   initStore();
+  document.body.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
 });
 </script>
 

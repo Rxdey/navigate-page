@@ -4,7 +4,7 @@ import qs from 'qs';
 axios.defaults.withCredentials = true;
 
 export type ActionType = {
-  [key: number | string]: string
+  [key: string]: string
 }
 
 export interface AxiosCustomConfig extends AxiosRequestConfig {

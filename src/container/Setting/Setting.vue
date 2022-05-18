@@ -1,11 +1,11 @@
 <template>
   <section class="setting-button">
-    <van-icon name="bar-chart-o" size=".7rem" color="#fff" @click="showPopup" />
+    <van-icon name="wap-nav" size=".7rem" color="#fff" @click="showPopup" />
   </section>
   <van-popup v-model:show="show" :position="popupSetting.position" :round="popupSetting.round" teleport="body" class="current-popup" :overlay-style="{ backgroundColor: 'transparent' }">
     <van-tabs v-model:active="active" animated color="#fc7c79" lazy-render>
       <van-tab title="添加">
-        <AddPaneVue />
+        <ShortcutMenu />
       </van-tab>
       <van-tab title="背景">
         <LayoutVue />
@@ -13,8 +13,8 @@
       <van-tab title="全局">
         <GlobalVue />
       </van-tab>
-      <van-tab title="设置">
-      </van-tab>
+      <!-- <van-tab title="设置">
+      </van-tab> -->
     </van-tabs>
   </van-popup>
 </template>
@@ -22,9 +22,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { Popup as VanPopup, Tab as VanTab, Tabs as VanTabs, PopupPosition } from 'vant';
-import AddPaneVue from './components/AddPane.vue';
-import LayoutVue from './components/LayoutVue.vue';
-import GlobalVue from './components/Global.vue';
+import ShortcutMenu from './container/ShortcutMenu/ShortcutMenu.vue';
+import LayoutVue from './container/LayoutVue.vue';
+import GlobalVue from './container/Global.vue';
 
 const show = ref(false);
 const active = ref(0);
@@ -69,17 +69,17 @@ onMounted(() => {
 
 .setting-button {
   position: fixed;
-  bottom: 32px;
-  left: 32px;
+  top: 32px;
+  right: 32px;
 }
 
 .current-popup {
   height: 70%;
   overflow: hidden;
-  background-color: rgba(255, 255, 255, .9);
+  background-color: rgba(255, 255, 255, .7);
   --van-cell-group-title-color: #ee0a24;
-  .van-tabs__nav {
-    background-color: rgba(255, 255, 255, .7);
+  .van-tabs__nav, .van-collapse-item__content {
+    background-color: rgba(255, 255, 255, .5);
   }
   .van-cell,.van-cell-group {
     background-color: transparent;

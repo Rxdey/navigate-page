@@ -1,6 +1,6 @@
 import { ShortcutData } from '@/common/types';
 
-const PATH = '/icon/shortcut/';
+const PATH = './icon/shortcut/';
 export const shortcutMenuNavList = [
   {
     tag: 1,

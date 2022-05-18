@@ -1,5 +1,5 @@
 module.exports = {
-  // publicPath: './',
+  publicPath: './',
   assetsDir: 'static',
   productionSourceMap: false,
   devServer: {
@@ -10,5 +10,13 @@ module.exports = {
     // modules: false,
     extract: true,
     sourceMap: false,
+  },
+  chainWebpack: (config) => {
+    config
+      .plugin('html')
+      .tap((args) => {
+        args[0].title = '开始吧~';
+        return args;
+      });
   },
 };

@@ -458,7 +458,7 @@ watch(tempFontColor, (val) => {
       overflow: hidden;
 
       &.picker .color-inner {
-        background: url(/image/color.png) no-repeat center;
+        background: url(../../../../assets/image/color.png) no-repeat center;
         background-size: contain;
       }
     }

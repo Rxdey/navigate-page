@@ -37,19 +37,19 @@ export const DEFAULT_GLOBAL_SETTING: GlobalSettingData = {
 export const DEFAULT_SEARCH_ENGINE_LIST: SearchEngine[] = [
   {
     label: '百度',
-    logo: '/icon/engine/baidu.ico',
+    logo: './icon/engine/baidu.ico',
     url: 'https://www.baidu.com/s?wd=',
     readonly: true,
   },
   {
     label: '谷歌',
-    logo: '/icon/engine/google.ico',
+    logo: './icon/engine/google.ico',
     url: 'https://www.google.com/search?q=',
     readonly: true,
   },
   {
     label: '必应',
-    logo: '/icon/engine/biying.ico',
+    logo: './icon/engine/biying.ico',
     url: 'https://cn.bing.com/search?q=',
     readonly: true,
   },

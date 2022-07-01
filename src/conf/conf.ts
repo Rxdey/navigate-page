@@ -38,7 +38,7 @@ export const DEFAULT_SEARCH_ENGINE_LIST: SearchEngine[] = [
   {
     label: '百度',
     logo: './icon/engine/baidu.ico',
-    url: 'https://www.baidu.com/s?wd=',
+    url: 'https://m.baidu.com/s?word=',
     readonly: true,
   },
   {
